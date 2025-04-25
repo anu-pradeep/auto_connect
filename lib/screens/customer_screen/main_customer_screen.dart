@@ -6,7 +6,7 @@ import '../common_custom_widgets/colors.dart';
 import '../common_custom_widgets/custom_heading_text.dart';
 import '../common_custom_widgets/drawer.dart';
 import 'customer_container.dart';
-void main(){runApp(MaterialApp(home: MainCustomerScreen(),));}
+
 class MainCustomerScreen extends StatefulWidget {
   const MainCustomerScreen({super.key});
 
@@ -49,7 +49,7 @@ class _MainCustomerScreenState extends State<MainCustomerScreen> {
                   colorName: CustomColors.borderColor,
                   fontSize: 13),
               const SizedBox(height: 18),
-              CustomerContainer(),
+              const CustomerContainer(),
             ],
           ),
         ),

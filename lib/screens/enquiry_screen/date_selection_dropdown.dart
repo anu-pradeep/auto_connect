@@ -26,7 +26,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedStartDay;
   DateTime? _selectedEndDay;
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  // CalendarFormat _calendarFormat = CalendarFormat.month;
   int _currentMonth = 0; // 0 = current month, 1 = next month
 
   // Global key to get position for the dropdown

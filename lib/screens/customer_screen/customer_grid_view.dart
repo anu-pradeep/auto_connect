@@ -1,4 +1,5 @@
 import 'package:auto_connect/screens/common_custom_widgets/colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../api_service_classes/customer_list_api.dart';
 import '../../api_service_classes/customer_list_fetching.dart';
@@ -58,17 +59,15 @@ class _CustomerGridViewState extends State<CustomerGridView> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Email :  ${customer.email}',
-                      style: const TextStyle(
-                          fontSize: 12, fontFamily: 'PoppinsMedium'),
+                      'Email :  ${customer.email ?? 'Not Provided'}',
+                      style: const TextStyle(fontSize: 12, fontFamily: 'PoppinsMedium'),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Phone :  ${customer.phone}',
-                      style: const TextStyle(
-                          fontSize: 12, fontFamily: 'PoppinsMedium'),
+                      'Phone :  ${customer.phone ?? 'Not Provided'}',
+                      style: const TextStyle(fontSize: 12, fontFamily: 'PoppinsMedium'),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -135,7 +134,9 @@ class _CustomerGridViewState extends State<CustomerGridView> {
       await _customerListService.fetchCustomerList(3, page: _currentPage);
       // final List<Map<String, dynamic>> response =
       // await _customerListService.fetchCustomerList(3, page: _currentPage);
-      print('Raw API Response: $response'); // Debug print
+      if (kDebugMode) {
+        print('Raw API Response: $response');
+      } // Debug print
 
       if (response.isNotEmpty) {
         final List<Customer> newCustomers = response
@@ -152,7 +153,7 @@ class _CustomerGridViewState extends State<CustomerGridView> {
       }
     } catch (e) {
       print('Error fetching customers: $e');
-      // Optionally show error to user
+
     } finally {
       setState(() => _isLoading = false);
     }

@@ -1,7 +1,9 @@
 import 'package:auto_connect/screens/main_vehicle_screen/vehicle_grid_view.dart';
 import 'package:auto_connect/screens/main_vehicle_screen/vehicle_text_form.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
+import '../Enquiry_screen/date_selection_dropdown.dart';
 import '../add_enquiry_screen/customer_dropdown_field.dart';
 import '../add_enquiry_screen/vehicle_adding_screen/brands_dropdown.dart';
 import '../add_enquiry_screen/vehicle_adding_screen/car_model_dropdown.dart';
@@ -35,29 +37,36 @@ class _VehicleContainerState extends State<VehicleContainer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const SizedBox(
-                      width: 200,
+                      width: 210,
                       child: VehicleTextFrom(
                         formText: 'Keyword',
                       )),
-                  const SizedBox(
-                      width: 200,
-                      child: VehicleTextFrom(
-                        formText: 'Select Date Range',
-                      )),
                   SizedBox(
-                      width: 200,
+                    width: 210,
+                    child: SelectDateRangeDropdown(
+                      onDateRangeSelected:
+                          (DateTime? startDate, DateTime? endDate) {
+                        if (startDate != null && endDate != null) {
+                          print(
+                              'Selected range: ${DateFormat('yyyy/MM/dd').format(startDate)} - ${DateFormat('yyyy/MM/dd').format(endDate)}');
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                      width: 210,
                       child: SearchableCustomerDropdown(
                         hintText: 'Customer',
                         onItemSelected: (String) {},
                       )),
                   SizedBox(
-                      width: 200,
+                      width: 210,
                       child: SearchableCarCompanyDropdown(
                         hintText: 'Brand',
                         onItemSelected: (String) {},
                         validator: (String) {},
                       )),
-                  SizedBox(width: 200,
+                  SizedBox(width: 210,
                     child: CarModelsDropdown(
                       hintText: 'Model',
                       onItemSelected: (String) {},

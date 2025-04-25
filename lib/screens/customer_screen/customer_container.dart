@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+import '../Enquiry_screen/date_selection_dropdown.dart';
 import '../common_custom_widgets/colors.dart';
 import 'active_or_inactive_dropdown.dart';
 import 'customer_grid_view.dart';
@@ -33,15 +35,22 @@ class _CustomerContainerState extends State<CustomerContainer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const SizedBox(
-                      width: 250,
+                      width: 270,
                       child: CustomerTextFrom(
                         formText: 'Keyword',
                       )),
-                  const SizedBox(
-                      width: 250,
-                      child: CustomerTextFrom(
-                        formText: 'Select Date Range',
-                      )),
+                  SizedBox(
+                    width: 270,
+                    child: SelectDateRangeDropdown(
+                      onDateRangeSelected:
+                          (DateTime? startDate, DateTime? endDate) {
+                        if (startDate != null && endDate != null) {
+                          print(
+                              'Selected range: ${DateFormat('yyyy/MM/dd').format(startDate)} - ${DateFormat('yyyy/MM/dd').format(endDate)}');
+                        }
+                      },
+                    ),
+                  ),
                   SizedBox(
                       width: 250,
                       child: ActiveOrInactiveDropdown(
@@ -49,7 +58,7 @@ class _CustomerContainerState extends State<CustomerContainer> {
                         onItemSelected: (String) {},
                       )),
                   SizedBox(
-                      width: 250,
+                      width: 270,
                       child: TypeOfCustomerDropdown(
                         hintText: 'Customer Type',
                         onItemSelected: (String) {},

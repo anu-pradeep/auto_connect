@@ -29,8 +29,7 @@ class _VehicleGridviewState extends State<VehicleGridview> {
           controller: _scrollController,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-            // childAspectRatio: 1.8,
-            crossAxisSpacing: 20,
+
           ),
           itemCount: _vehicles.length + (_hasMore ? 1 : 0),
           itemBuilder: (context, index) {
@@ -50,11 +49,13 @@ class _VehicleGridviewState extends State<VehicleGridview> {
                     children: [
                       Row(
                         children: [
-                          VehicleCard(
-                            prefixText: vehicle.platePrefix,
-                            plateSourceText: vehicle.stateName,
-                            plateCategoryText: vehicle.plateType,
-                            plateNo: vehicle.registerNumber,
+                          Expanded(
+                            child: VehicleCard(
+                              prefixText: vehicle.platePrefix,
+                              plateSourceText: vehicle.stateName,
+                              plateCategoryText: vehicle.plateType,
+                              plateNo: vehicle.registerNumber,
+                            ),
                           ),
                         ],
                       ),
