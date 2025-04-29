@@ -1,6 +1,6 @@
 import 'package:auto_connect/api_service_classes/login_api.dart';
-import 'package:auto_connect/screens/sign_in_with_custom_widgets/textform_field_email.dart';
-import 'package:auto_connect/screens/sign_in_with_custom_widgets/textform_field_password.dart';
+import 'package:auto_connect/screens/sign_in_screen/textform_field_email.dart';
+import 'package:auto_connect/screens/sign_in_screen/textform_field_password.dart';
 import 'package:flutter/material.dart';
 import '../common_custom_widgets/colors.dart';
 import '../common_custom_widgets/custom_heading_text.dart';

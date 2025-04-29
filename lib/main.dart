@@ -1,4 +1,4 @@
-import 'package:auto_connect/screens/sign_in_with_custom_widgets/sign_in_screen.dart';
+import 'package:auto_connect/screens/sign_in_screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

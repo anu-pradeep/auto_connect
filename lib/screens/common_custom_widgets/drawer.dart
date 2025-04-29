@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../Enquiry_screen/main_enquiry_screen.dart';
 import '../customer_screen/main_customer_screen.dart';
 import '../main_vehicle_screen/main_vehicle_screen.dart';
-import '../sign_in_with_custom_widgets/sign_in_screen.dart';
+import '../sign_in_screen/sign_in_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
