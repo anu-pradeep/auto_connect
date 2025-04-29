@@ -134,7 +134,7 @@ class _EnquiryGridviewState extends State<EnquiryGridview> {
     );
   }
 
-  /// ***on scroll function*** ///
+  /// *** functions *** ///
   final EnquiryListService _enquiryListService = EnquiryListService();
   final ScrollController _scrollController = ScrollController();
   final List<Enquiry> _enquiries = [];

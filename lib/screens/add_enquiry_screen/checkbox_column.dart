@@ -7,16 +7,14 @@ import 'package:auto_connect/screens/add_enquiry_screen/vehicle_list_dropdown.da
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../xxxxxxxxxxxxxxxxxxx.dart';
+import '../../model_classes/enquiry_model.dart';
 import '../common_custom_widgets/colors.dart';
 import '../common_custom_widgets/custom_heading_text.dart';
 import '../common_custom_widgets/icon_button.dart';
 import 'check_box.dart';
 import 'command_field.dart';
 import 'customer_adding_screen/alert_dialog_box.dart';
-import 'customer_adding_screen/main_screen_of_customer_adding.dart';
 import 'customer_dropdown_field.dart';
-import '../../api_class/model_classes/enquiry_model.dart';
 import 'insurance_dropdown.dart';
 
 class CheckboxColumn extends StatefulWidget {
@@ -59,7 +57,6 @@ class _CheckboxColumnState extends State<CheckboxColumn> {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        // return const MainScreenOfCustomerAdding();
                         return const CustomerFormDialog();
                       });
                 },
@@ -127,7 +124,7 @@ class _CheckboxColumnState extends State<CheckboxColumn> {
               colorName: CustomColors.blackColor,
               fontSize: 13),
           const SizedBox(height: 10),
-          const CustomerCommandField(),
+           CustomerCommandField(controller: commandController,),
           const SizedBox(height: 10),
           Row(
             children: [
@@ -152,21 +149,21 @@ class _CheckboxColumnState extends State<CheckboxColumn> {
             children: [
               SizedBox(
                   width: 350,
-                  child: threeTextFromField(
+                  child: ThreeTextFromField(
                     textHint: 'Odometer Reading',
                     controller: odometerController,
                   )),
               const SizedBox(width: 65),
               SizedBox(
                   width: 350,
-                  child: threeTextFromField(
+                  child: ThreeTextFromField(
                     textHint: 'Driver Name',
                     controller: driverNameController,
                   )),
               const SizedBox(width: 65),
               SizedBox(
                   width: 350,
-                  child: threeTextFromField(
+                  child: ThreeTextFromField(
                     textHint: 'Driver Phone',
                     controller: driverPhoneController,
                   )),

@@ -10,7 +10,7 @@ class MainInspectionScreen extends StatefulWidget {
 class _MainInspectionScreenState extends State<MainInspectionScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text('INSPECTION SCREEN'),
       ),

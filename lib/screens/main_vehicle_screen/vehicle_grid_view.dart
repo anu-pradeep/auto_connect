@@ -19,17 +19,17 @@ class VehicleGridview extends StatefulWidget {
 }
 
 class _VehicleGridviewState extends State<VehicleGridview> {
-
-
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Expanded(
       child: GridView.builder(
           key: _vehicleGridViewKey,
           controller: _scrollController,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-
+            crossAxisCount: 3,
           ),
           itemCount: _vehicles.length + (_hasMore ? 1 : 0),
           itemBuilder: (context, index) {
@@ -38,7 +38,7 @@ class _VehicleGridviewState extends State<VehicleGridview> {
             }
             final vehicle = _vehicles[index];
             return Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 80),
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 50),
               child: Card(
                 elevation: 4.0,
                 color: CustomColors.whiteColor,
@@ -61,7 +61,7 @@ class _VehicleGridviewState extends State<VehicleGridview> {
                       ),
                       const SizedBox(height: 30),
                       Text(
-                        'Customer ID : ${vehicle.customerName}',
+                        'Customer Name : ${vehicle.customerName}',
                         style: TextStyle(
                             color: CustomColors.blackColor,
                             fontFamily: 'PoppinsRegular',
@@ -92,7 +92,6 @@ class _VehicleGridviewState extends State<VehicleGridview> {
                 ),
               ),
             );
-
           }),
     );
   }
@@ -107,50 +106,52 @@ class _VehicleGridviewState extends State<VehicleGridview> {
   Map<String, dynamic> _brandIdName = {};
   Map<String, dynamic> _modelIdName = {};
   Map<String, String> _customerIdName = {};
+  bool _isCustomerLoading = false;
+  bool _isBrandLoading = false;
+  bool _isModelLoading = false;
+  bool _isVehicleLoading = false;
 
   bool _isLoading = false;
   bool _hasMore = true;
   int _currentPage = 1;
 
   final GlobalKey<_VehicleGridviewState> _vehicleGridViewKey =
-  GlobalKey<_VehicleGridviewState>();
-
-
+      GlobalKey<_VehicleGridviewState>();
   @override
   void initState() {
     super.initState();
-    fetchVehicles();
-    _fetchAllCustomers().then((_) {
-      Future.wait([
-        _fetchBrands(),
-        _fetchModels(),
-      ]).then((_) => fetchVehicles());
-    }
-    );
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent &&
-          _hasMore) {
-        fetchVehicles();
-      }
-    });
+    _initializeData();
   }
 
+  Future<void> _initializeData() async {
+    try {
+      await Future.wait([
+        _fetchAllCustomers(),
+        _fetchBrands(),
+        _fetchModels(),
+      ]);
+
+      await fetchVehicles();
+    } catch (e) {
+      if (kDebugMode) {
+        print('Initialization error: $e');
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   // car brand
   Future<void> _fetchBrands() async {
     try {
       final List<Map<String, dynamic>> brands =
           await _carBrandsClass.carBrandsList();
-      if (kDebugMode) {
-        print('Fetched brands: $brands');
-      }
+
       setState(() {
         _brandIdName = {for (var brand in brands) brand['id']: brand['name']};
-        if (kDebugMode) {
-          print('Brand ID-Name map: $_brandIdName');
-        }
+
       });
     } catch (error) {
       if (kDebugMode) {
@@ -166,9 +167,7 @@ class _VehicleGridviewState extends State<VehicleGridview> {
           await _carModelClass.carModelList();
       setState(() {
         _modelIdName = {for (var model in models) model['id']: model['name']};
-        if (kDebugMode) {
-          print('Model ID-Name map: $_modelIdName');
-        }
+
       });
     } catch (error) {
       if (kDebugMode) {
@@ -177,148 +176,70 @@ class _VehicleGridviewState extends State<VehicleGridview> {
     }
   }
 
-  //customer name
   Future<void> _fetchAllCustomers() async {
-    setState(() {
-      _isLoading = true;
-    });
     try {
+      _isCustomerLoading = true;
       final int firmId = 3;
-
       int page = 1;
+      bool hasMoreCustomers = true;
 
-      while (_hasMore) {
+      while (hasMoreCustomers) {
         final List<Map<String, dynamic>> customers =
             await _customerListClass.fetchCustomerList(firmId, page: page);
 
         if (customers.isEmpty) {
-          _hasMore = false;
+          hasMoreCustomers = false;
         } else {
-          setState(() {
-            _customerIdName.addAll({
-              for (var customer in customers)
-                customer['id'].toString(): customer['name']
-            });
-            page++;
+          _customerIdName.addAll({
+            for (var customer in customers)
+              customer['id'].toString(): customer['name']
           });
-
-          if (kDebugMode) {
-            print('Loaded ${customers.length} customers on page $page');
-            print('Current customer IDs: ${_customerIdName.keys}');
-          }
+          page++;
         }
       }
 
-      if (kDebugMode) {
-        print('Total customers loaded: ${_customerIdName.length}');
-        print('Sample customer data: ${_customerIdName.entries.take(5)}');
-      }
+
     } catch (error) {
       if (kDebugMode) {
         print('Error fetching customers: $error');
       }
+    } finally {
+      _isCustomerLoading = false;
     }
   }
 
-//   Future<void> fetchVehicles() async {
-//     if (_isLoading) return;
-//
-// setState(() {
-//   _isLoading=true;
-// });
-//     try {
-//       final List<Map<String, dynamic>> response =
-//           await _vehicleListService.fetchVehicleList(page: _currentPage);
-//
-//       if (response.isNotEmpty) {
-//         // setState(() {
-//         //   _isLoading = true;
-//         // });
-//
-//         final List<Vehicle> newVehicle =
-//             response.map((json) => Vehicle.fromJson(json)).toList();
-//
-//         for (var vehicle in newVehicle) {
-//           vehicle.brandName = _brandIdName[vehicle.brand] ?? 'Unknown Brand';
-//           vehicle.modelName = _modelIdName[vehicle.model] ?? 'Unknown Model';
-//           vehicle.customerName =
-//               _customerIdName[vehicle.customerId] ?? 'Unknown Customer';
-//
-//           if (vehicle.customerName == 'Unknown Customer') {
-//             if (kDebugMode) {
-//               print('Unknown customer for ID: ${vehicle.customerId}');
-//               print('Available customer IDs: ${_customerIdName.keys}');
-//               print('Vehicle data: ${vehicle.registerNumber}');
-//             }
-//           }
-//         }
-//
-//         setState(() {
-//           _vehicles.addAll(newVehicle);
-//           _hasMore = response.isNotEmpty;
-//           _currentPage++;
-//         });
-//       } else {
-//         setState(() {
-//           _hasMore = false;
-//         });
-//       }
-//     } catch (error) {
-//       if (kDebugMode) {
-//         print('Error fetching vehicles: $error');
-//       }
-//       setState(() {
-//         _hasMore = false;
-//       });
-//     } finally {
-//       setState(() {
-//         _isLoading = false;
-//       });
-//     }
-//   }
   Future<void> fetchVehicles() async {
     if (_isLoading) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+    _isLoading = true;
+    _isVehicleLoading = true;
 
     try {
       final List<Map<String, dynamic>> response =
-      await _vehicleListService.fetchVehicleList(page: _currentPage);
+          await _vehicleListService.fetchVehicleList(page: _currentPage);
 
-      // if (response.isNotEmpty) {
-      //   setState(() {
-      //     _vehicles.addAll(response
-      //         .map((json) => Vehicle.fromJson(json))
-      //         .toList());
-      //     _hasMore = response.isNotEmpty;
-      //     _currentPage++;
-      //   });
-      // } else {
-      //   setState(() {
-      //     _hasMore = false;
-      //   });
-      // }
-      if(response.isNotEmpty)
-        {
-          final List<Vehicle> newVehicle = response.map((json)=>Vehicle.fromJson(json)).toList();
-          for(var vehicle in newVehicle)
-            {
-              vehicle.brandName = _brandIdName[vehicle.brand]?? 'Unknown Brand';
-            }
-          setState(() {
-            _vehicles.addAll(newVehicle);
-            _hasMore = response.isNotEmpty;
-            _currentPage++;
-          });
-        }else{
+      if (response.isNotEmpty) {
+        final List<Vehicle> newVehicles =
+            response.map((json) => Vehicle.fromJson(json)).toList();
+
+        for (var vehicle in newVehicles) {
+          vehicle.brandName = _brandIdName[vehicle.brand] ?? 'Unknown Brand';
+          vehicle.modelName = _modelIdName[vehicle.model] ?? 'Unknown Model';
+          vehicle.customerName =
+              _customerIdName[vehicle.customerId] ?? 'Unknown Customer';
+        }
+
         setState(() {
-          _hasMore =false;
+          _vehicles.addAll(newVehicles);
+          _hasMore = true;
+          _currentPage++;
+        });
+      } else {
+        setState(() {
+          _hasMore = false;
         });
       }
-    }
-    catch (error) {
+    } catch (error) {
       if (kDebugMode) {
         print('Error fetching vehicles: $error');
       }
@@ -326,11 +247,10 @@ class _VehicleGridviewState extends State<VehicleGridview> {
         _hasMore = false;
       });
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      _isVehicleLoading = false;
     }
   }
+
   void refreshVehicles() {
     if (mounted) {
       setState(() {
@@ -343,5 +263,4 @@ class _VehicleGridviewState extends State<VehicleGridview> {
       _fetchBrands().then((_) => fetchVehicles());
     }
   }
-
 }

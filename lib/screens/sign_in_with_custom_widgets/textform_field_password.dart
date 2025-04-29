@@ -24,7 +24,8 @@ class TextFormFieldPassword extends StatelessWidget {
             hintStyle: TextStyle(
               color: CustomColors.textFormTextColor,
               fontSize: 15,
-              fontFamily: 'PoppinsBold',
+              fontFamily: 'PoppinsRegular',
+
             ),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
@@ -45,24 +46,7 @@ class TextFormFieldPassword extends StatelessWidget {
               borderSide:
                   BorderSide(color: CustomColors.borderColor, width: 0.5),
             ),
-            // suffixIcon: Visibility(
-            //   visible: widget.iconVisible == true,
-            //   child: IconButton(
-            //     onPressed: () {
-            //       setState(() {
-            //         if (showPass) {
-            //           showPass = false;
-            //         } else {
-            //           showPass = true;
-            //         }
-            //       });
-            //     },
-            //     icon: Icon(showPass == true
-            //         ? Icons.visibility_off
-            //         : Icons.visibility),
-            //     color: CustomColors.borderColor,
-            //   ),
-            // ),
+
           )),
     );
   }

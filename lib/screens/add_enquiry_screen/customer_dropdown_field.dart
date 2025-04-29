@@ -46,7 +46,7 @@ class _SearchableCustomerDropdownState extends State<SearchableCustomerDropdown>
     super.initState();
     fetchCustomerData();
 
-    _searchController.addListener(_filterCustomers);
+    _searchController.addListener(filterCustomers);
 
     _customerScrollController.addListener(() {
       if (_customerScrollController.position.pixels >
@@ -59,16 +59,16 @@ class _SearchableCustomerDropdownState extends State<SearchableCustomerDropdown>
 
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
 
   @override
   void dispose() {
-    _hideDropdown();
+    hideDropdown();
     _searchController.dispose();
     _focusNode.dispose();
     _customerScrollController.dispose();
@@ -118,7 +118,7 @@ class _SearchableCustomerDropdownState extends State<SearchableCustomerDropdown>
     }
   }
 
-  void _filterCustomers() {
+  void filterCustomers() {
     final query = _searchController.text.toLowerCase();
     setState(() {
       filteredCustomers = customers
@@ -126,19 +126,19 @@ class _SearchableCustomerDropdownState extends State<SearchableCustomerDropdown>
           .toList();
     });
 
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 
-  void _selectCustomer(Map<String, dynamic> customer) {
+  void selectCustomer(Map<String, dynamic> customer) {
     setState(() {
       selectedCustomer = customer['id'].toString();
       _searchController.text = customer['name'];
       _errorText = null;
     });
-    _hideDropdown();
+    hideDropdown();
     widget.onItemSelected(selectedCustomer!);
     FocusScope.of(context).unfocus();
   }
@@ -154,8 +154,8 @@ class _SearchableCustomerDropdownState extends State<SearchableCustomerDropdown>
     return null;
   }
 
-  void _showDropdown() {
-    _hideDropdown();
+  void showDropdown() {
+    hideDropdown();
 
     final RenderBox renderBox = _fieldKey.currentContext!.findRenderObject() as RenderBox;
     final size = renderBox.size;
@@ -208,7 +208,7 @@ class _SearchableCustomerDropdownState extends State<SearchableCustomerDropdown>
                 final customer = filteredCustomers[index];
                 return ListTile(
                   title: Text(customer['name']),
-                  onTap: () => _selectCustomer(customer),
+                  onTap: () => selectCustomer(customer),
                 );
               },
             ),
@@ -220,7 +220,7 @@ class _SearchableCustomerDropdownState extends State<SearchableCustomerDropdown>
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -247,7 +247,7 @@ class _SearchableCustomerDropdownState extends State<SearchableCustomerDropdown>
                 hintStyle: TextStyle(
                   color: CustomColors.textFormTextColor,
                   fontSize: 15,
-                  fontFamily: 'PoppinsMedium',
+                  fontFamily: 'PoppinsRegular',
                 ),
                 suffixIcon: IconButton(
                   icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:auto_connect/api_class/api_path.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,31 +28,16 @@ class CustomerTypeClass {
                   'name': customerType['name'],
                 })
             .toList();
-        if (kDebugMode) {
-          print('********************');
-        }
-        if (kDebugMode) {
-          print(extractedData);
-        }
-        if (kDebugMode) {
-          print(token);
-        }
-        if (kDebugMode) {
-          print('********************');
-        }
+
         await prefs.setString(customerTypeKey, json.encode(extractedData));
         return extractedData;
       } else {
-        if (kDebugMode) {
-          print('API Error: ${response.statusCode} - ${response.body}');
-        }
+
         throw Exception(
             'Failed to fetch customer type: ${response.reasonPhrase}');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('Error during API call: $e');
-      }
+
       throw Exception('Failed to fetch customer type');
     }
   }

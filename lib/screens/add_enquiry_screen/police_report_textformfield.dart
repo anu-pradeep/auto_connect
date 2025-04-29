@@ -6,7 +6,7 @@ class PoliceReportField extends StatelessWidget {
   final bool isInsured;
   final String? Function(String?)? validator;
 
-  PoliceReportField({
+  const PoliceReportField({
     super.key,
     required this.controller,
     required this.isInsured,
@@ -23,7 +23,7 @@ class PoliceReportField extends StatelessWidget {
           hintStyle: TextStyle(
             color: CustomColors.textFormTextColor,
             fontSize: 15,
-            fontFamily: 'PoppinsBold',
+            fontFamily: 'PoppinsRegular',
           ),
           filled: true,
           fillColor: CustomColors.whiteColor,
@@ -41,12 +41,7 @@ class PoliceReportField extends StatelessWidget {
           ),
         ),
         validator: validator
-        //     (value) {
-        //   if (isInsured && (value == null || value.isEmpty)) {
-        //     return "Required";
-        //   }
-        //   return null;
-        // },
+
         );
   }
 }

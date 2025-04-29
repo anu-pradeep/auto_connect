@@ -29,7 +29,8 @@ class _CardForServicesState extends State<CardForServices> {
                   color: CustomColors.blackColor,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'PoppinsMedium'),
+                fontFamily: 'PoppinsRegular',
+              ),
             ),
             // const SizedBox(height: 10),
             Row(

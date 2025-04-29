@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:auto_connect/api_class/api_path.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,32 +27,17 @@ class CareOfsApi {
         final extractedData = data.map((careOf) => {
           'id': careOf['id'].toString(),
           'name': careOf['name'],
-          // 'email': careOf['email'],
-          // 'phone': careOf['phone'],
-          // 'address': careOf['address'],
-          // 'image': careOf['image'],
-          // 'remark': careOf['remark'],
-          // 'created_at': careOf['created_at'],
-          // 'updated_at': careOf['updated_at'],
-        }).toList();
 
-        if (kDebugMode) {
-          print('Fetched Care Ofs Data:');
-          print(extractedData);
-        }
+        }).toList();
 
         await prefs.setString(sharedKey, json.encode(extractedData));
         return extractedData;
       } else {
-        if (kDebugMode) {
-          print('API Error: ${response.statusCode} - ${response.body}');
-        }
+
         throw Exception('Failed to fetch care ofs: ${response.reasonPhrase}');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('Error during API call: $e');
-      }
+
       throw Exception('Failed to fetch care ofs');
     }
   }

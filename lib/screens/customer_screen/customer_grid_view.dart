@@ -12,7 +12,6 @@ class CustomerGridView extends StatefulWidget {
 }
 
 class _CustomerGridViewState extends State<CustomerGridView> {
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -31,8 +30,7 @@ class _CustomerGridViewState extends State<CustomerGridView> {
             return const Center(child: CircularProgressIndicator());
           }
           final customer = _customers[index];
-          return
-            Padding(
+          return Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
             child: Card(
               color: CustomColors.whiteColor,
@@ -45,7 +43,9 @@ class _CustomerGridViewState extends State<CustomerGridView> {
                     Text(
                       'Customer Name :  ${customer.name}',
                       style: const TextStyle(
-                          fontSize: 13, fontFamily: 'PoppinsMedium'),
+                        fontSize: 13,
+                        fontFamily: 'PoppinsRegular',
+                      ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -53,21 +53,29 @@ class _CustomerGridViewState extends State<CustomerGridView> {
                     Text(
                       'Customer Type :  ${customer.outsideOrGp}',
                       style: const TextStyle(
-                          fontSize: 13, fontFamily: 'PoppinsMedium'),
+                        fontSize: 13,
+                        fontFamily: 'PoppinsRegular',
+                      ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                     const SizedBox(height: 10),
                     Text(
                       'Email :  ${customer.email ?? 'Not Provided'}',
-                      style: const TextStyle(fontSize: 12, fontFamily: 'PoppinsMedium'),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'PoppinsRegular',
+                      ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                     const SizedBox(height: 10),
                     Text(
                       'Phone :  ${customer.phone ?? 'Not Provided'}',
-                      style: const TextStyle(fontSize: 12, fontFamily: 'PoppinsMedium'),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'PoppinsRegular',
+                      ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -76,7 +84,8 @@ class _CustomerGridViewState extends State<CustomerGridView> {
                       width: 80,
                       height: 30,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 5.0),
                         decoration: BoxDecoration(
                           color: customer.status == 0 // Compare with int now
                               ? CustomColors.greenColor
@@ -102,6 +111,7 @@ class _CustomerGridViewState extends State<CustomerGridView> {
       ),
     );
   }
+
   final ScrollController _scrollController = ScrollController();
   final CustomerListClass _customerListService = CustomerListClass();
   final List<Customer> _customers = [];
@@ -109,7 +119,7 @@ class _CustomerGridViewState extends State<CustomerGridView> {
   bool _hasMore = true;
   int _currentPage = 1;
   final GlobalKey<_CustomerGridViewState> _customerGridViewKey =
-  GlobalKey<_CustomerGridViewState>();
+      GlobalKey<_CustomerGridViewState>();
 
   @override
   void initState() {
@@ -117,7 +127,7 @@ class _CustomerGridViewState extends State<CustomerGridView> {
     fetchCustomers();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent &&
+              _scrollController.position.maxScrollExtent &&
           _hasMore) {
         fetchCustomers();
       }
@@ -131,29 +141,24 @@ class _CustomerGridViewState extends State<CustomerGridView> {
 
     try {
       final List<Map<String, dynamic>> response =
-      await _customerListService.fetchCustomerList(3, page: _currentPage);
-      // final List<Map<String, dynamic>> response =
-      // await _customerListService.fetchCustomerList(3, page: _currentPage);
-      if (kDebugMode) {
-        print('Raw API Response: $response');
-      } // Debug print
+          await _customerListService.fetchCustomerList(3, page: _currentPage);
 
       if (response.isNotEmpty) {
-        final List<Customer> newCustomers = response
-            .map((json) => Customer.fromJson(json))
-            .toList();
+        final List<Customer> newCustomers =
+            response.map((json) => Customer.fromJson(json)).toList();
 
         setState(() {
           _customers.addAll(newCustomers);
-          _hasMore = response.length >= 20; // Assuming 20 items per page
+          _hasMore = response.length >= 20;
           _currentPage++;
         });
       } else {
         setState(() => _hasMore = false);
       }
     } catch (e) {
-      print('Error fetching customers: $e');
-
+      if (kDebugMode) {
+        print('Error fetching customers: $e');
+      }
     } finally {
       setState(() => _isLoading = false);
     }

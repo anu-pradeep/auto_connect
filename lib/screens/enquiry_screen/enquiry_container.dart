@@ -5,11 +5,10 @@ import 'package:intl/intl.dart';
 
 import '../add_enquiry_screen/customer_dropdown_field.dart';
 import '../add_enquiry_screen/vehicle_list_dropdown.dart';
-import 'date_selection_dropdown.dart';
+import '../common_custom_widgets/date_selection_dropdown.dart';
 import 'gridview_builder.dart';
 import 'is_converted_dropdown.dart';
 import 'is_insured_dropdown.dart';
-import '../../custom_widgets_not_used/mainenquiry_dropdown.dart';
 
 class MainEnquiryContainer extends StatefulWidget {
   const MainEnquiryContainer({super.key});
@@ -97,11 +96,7 @@ class _MainEnquiryContainerState extends State<MainEnquiryContainer> {
               ),
             ),
             // const SizedBox(height: 15),
-            // Divider(
-            //     thickness: 0.5,
-            //     indent: 12,
-            //     endIndent: 12,
-            //     color: CustomColors.borderColor),
+
             const SizedBox(height: 20),
 
             const EnquiryGridview()

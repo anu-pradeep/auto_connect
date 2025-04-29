@@ -4,13 +4,11 @@ import '../../common_custom_widgets/colors.dart';
 class ServicesDropdown extends StatefulWidget {
   final String hintText;
   final Function(String) onItemSelected;
-  // final String? Function(String?) validator;
 
   const ServicesDropdown({
     super.key,
     required this.hintText,
     required this.onItemSelected,
-    // required this.validator,
   });
 
   @override
@@ -24,7 +22,7 @@ class _ServicesDropdownState extends State<ServicesDropdown> {
   final GlobalKey _fieldKey = GlobalKey();
   OverlayEntry? _overlayEntry;
 
-  List<String> items = []; // Start with an empty list
+  List<String> items = [];
   List<String> filteredItems = [];
 
   @override
@@ -102,7 +100,10 @@ class _ServicesDropdownState extends State<ServicesDropdown> {
                 ),
                 TextButton(
                   onPressed: () => _addNewItem(_searchController.text),
-                  child: const Text("Add New Item"),
+                  child:  Text("Add New Item",style: TextStyle(
+                    color: CustomColors.blackColor,
+                    fontFamily: 'PoppinsRegular',
+                  ),),
                 ),
               ],
             )
@@ -118,7 +119,7 @@ class _ServicesDropdownState extends State<ServicesDropdown> {
                     style: TextStyle(
                       color: CustomColors.blackColor,
                       fontSize: 15,
-                      fontFamily: 'PoppinsMedium',
+                      fontFamily: 'PoppinsRegular',
                     ),
                   ),
                   onTap: () => _selectItem(item),
@@ -150,9 +151,8 @@ class _ServicesDropdownState extends State<ServicesDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsBold',
+          fontFamily: 'PoppinsRegular',
         ),
-        // prefixIcon:  Icon(Icons.search, color: CustomColors.borderColor),
         suffixIcon: IconButton(
           icon:  Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),
           onPressed: () {

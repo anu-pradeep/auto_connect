@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:auto_connect/api_class/api_path.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart'as http;
 class FirmSelectionClass
@@ -26,31 +25,15 @@ class FirmSelectionClass
             'name': firm['name'],
           })
               .toList();
-          if (kDebugMode) {
-            print('********************');
-          }
-          if (kDebugMode) {
-            print(extractedData);
-          }
-          if (kDebugMode) {
-            print(token);
-          }
-          if (kDebugMode) {
-            print('********************');
-          }
 
           await prefs.setString(sharedPrefsKey, json.encode(extractedData));
           return extractedData;
         } else {
-          if (kDebugMode) {
-            print('API Error: ${response.statusCode} - ${response.body}');
-          }
+
           throw Exception('Failed to fetch firms: ${response.reasonPhrase}');
         }
       } catch (e) {
-        if (kDebugMode) {
-          print('Error during API call: $e');
-        }
+
         throw Exception('Failed to fetch firms');
       }
 

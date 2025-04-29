@@ -44,10 +44,6 @@ class _CustomerContainerState extends State<CustomerContainer> {
                     child: SelectDateRangeDropdown(
                       onDateRangeSelected:
                           (DateTime? startDate, DateTime? endDate) {
-                        if (startDate != null && endDate != null) {
-                          print(
-                              'Selected range: ${DateFormat('yyyy/MM/dd').format(startDate)} - ${DateFormat('yyyy/MM/dd').format(endDate)}');
-                        }
                       },
                     ),
                   ),

@@ -30,53 +30,49 @@ class _SearchableYearDropdownState extends State<SearchableYearDropdown> {
   @override
   void initState() {
     super.initState();
-    _initializeYears();
-    _searchController.addListener(_filterYears);
+    initializeYears();
+    _searchController.addListener(filterYears);
 
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
 
-  // void _initializeYears() {
-  //   int currentYear = DateTime.now().year;
-  //   years = List.generate(50, (index) => (currentYear - index).toString());
-  //   filteredYears = List.from(years);
-  // }
-  void _initializeYears() {
+
+  void initializeYears() {
     int currentYear = DateTime.now().year;
     years = List.generate(currentYear - 1990 + 1, (index) => (currentYear - index).toString());
     filteredYears = List.from(years);
   }
 
-  void _filterYears() {
+  void filterYears() {
     final query = _searchController.text.toLowerCase();
     setState(() {
       filteredYears = years.where((year) => year.contains(query)).toList();
     });
 
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 
-  void _selectYear(String year) {
+  void selectYear(String year) {
     setState(() {
       selectedYear = year;
       _searchController.text = year;
     });
-    _hideDropdown();
+    hideDropdown();
     widget.onItemSelected(selectedYear!);
     FocusScope.of(context).unfocus();
   }
 
-  void _showDropdown() {
-    _hideDropdown();
+  void showDropdown() {
+    hideDropdown();
 
     final RenderBox renderBox =
         _fieldKey.currentContext!.findRenderObject() as RenderBox;
@@ -107,7 +103,8 @@ class _SearchableYearDropdownState extends State<SearchableYearDropdown> {
                         style: TextStyle(
                           color: CustomColors.textFormTextColor,
                           fontSize: 15,
-                          fontFamily: 'PoppinsBold',
+                          fontFamily: 'PoppinsRegular',
+
                         ),
                       ),
                     ),
@@ -124,10 +121,11 @@ class _SearchableYearDropdownState extends State<SearchableYearDropdown> {
                           style: TextStyle(
                             color: CustomColors.blackColor,
                             fontSize: 15,
-                            fontFamily: 'PoppinsMedium',
+                            fontFamily: 'PoppinsRegular',
+
                           ),
                         ),
-                        onTap: () => _selectYear(year),
+                        onTap: () => selectYear(year),
                       );
                     },
                   ),
@@ -139,7 +137,7 @@ class _SearchableYearDropdownState extends State<SearchableYearDropdown> {
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -156,7 +154,8 @@ class _SearchableYearDropdownState extends State<SearchableYearDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsBold',
+          fontFamily: 'PoppinsRegular',
+
         ),
         suffixIcon: IconButton(
           icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),

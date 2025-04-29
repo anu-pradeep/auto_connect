@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart'; // Import image_picker
 import 'dart:io';
 
-import '../../common_custom_widgets/colors.dart'; // Assuming this is your custom colors file
+import '../../common_custom_widgets/colors.dart';
 
 class CustomerImagePicker extends StatefulWidget {
   const CustomerImagePicker({super.key});
@@ -15,31 +15,31 @@ class CustomerImagePicker extends StatefulWidget {
 class _CustomerImagePickerState extends State<CustomerImagePicker> {
   File? _selectedFile;
   final ImagePicker _picker =
-      ImagePicker(); // Create an instance of ImagePicker
+      ImagePicker();
 
-  // Function to pick an image from the gallery
+
   Future<void> pickImageFromGallery() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       setState(() {
-        _selectedFile = File(image.path); // Convert XFile to File
+        _selectedFile = File(image.path);
+
       });
     }
   }
 
-  // Function to take a photo using the camera
   Future<void> pickImageFromCamera() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
 
     if (photo != null) {
       setState(() {
-        _selectedFile = File(photo.path); // Convert XFile to File
+        _selectedFile = File(photo.path);
+
       });
     }
   }
 
-  // Function to show a bottom sheet for choosing between gallery and camera
   void _showImageSourceBottomSheet() {
     showModalBottomSheet(
       context: context,
@@ -54,12 +54,12 @@ class _CustomerImagePickerState extends State<CustomerImagePicker> {
                   'Choose from Gallery',
                   style: TextStyle(
                       color: CustomColors.borderColor,
-                      fontFamily: 'PoppinsMedium',
+                      fontFamily: 'PoppinsRegular',
                       fontSize: 09.sp),
                 ),
                 onTap: () {
-                  Navigator.pop(context); // Close the bottom sheet
-                  pickImageFromGallery(); // Pick image from gallery
+                  Navigator.pop(context);
+                  pickImageFromGallery();
                 },
               ),
               ListTile(
@@ -68,12 +68,12 @@ class _CustomerImagePickerState extends State<CustomerImagePicker> {
                   'Take a Photo',
                   style: TextStyle(
                       color: CustomColors.borderColor,
-                      fontFamily: 'PoppinsMedium',
+                      fontFamily: 'PoppinsRegular',
                       fontSize: 09.sp),
                 ),
                 onTap: () {
-                  Navigator.pop(context); // Close the bottom sheet
-                  pickImageFromCamera(); // Take a photo using the camera
+                  Navigator.pop(context);
+                  pickImageFromCamera();
                 },
               ),
             ],
@@ -94,7 +94,7 @@ class _CustomerImagePickerState extends State<CustomerImagePicker> {
             "Image",
             style: TextStyle(
                 fontSize: 13,
-                fontFamily: 'PoppinsMedium',
+                fontFamily: 'PoppinsRegular',
                 color: CustomColors.blackColor),
           ),
           const SizedBox(height: 10),
@@ -137,7 +137,7 @@ class _CustomerImagePickerState extends State<CustomerImagePicker> {
                 right: 5,
                 child: GestureDetector(
                   onTap:
-                      _showImageSourceBottomSheet, // Show bottom sheet to choose source
+                      _showImageSourceBottomSheet,
                   child: Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(

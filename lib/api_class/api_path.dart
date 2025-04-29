@@ -1,7 +1,6 @@
 class AutoConnectApi {
   // static final String baseurl = 'https://autoconnect.pro';  /// *** main host *** ///
   static final String baseurl = 'https://uat.autoconnect.pro'; /// *** local host *** ///
-
   static final String loginApi = '/api/login';
   static final String firmApi = '/api/firms/list';
   static final String dashboardApi = '/api/dashboard';

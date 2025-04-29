@@ -2,29 +2,29 @@ import 'package:auto_connect/screens/add_enquiry_screen/customer_adding_screen/s
 import 'package:auto_connect/screens/common_custom_widgets/colors.dart';
 import 'package:auto_connect/screens/common_custom_widgets/custom_heading_text.dart';
 import 'package:auto_connect/screens/common_custom_widgets/text_span_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 import '../../../api_service_classes/customer_save_api.dart';
 import '../../../api_service_classes/customer_type_api.dart';
+import '../../customer_screen/main_customer_screen.dart';
 import 'credit_cash_dropdown.dart';
 import 'care_of_dropdown.dart';
 import 'customer_image_picker.dart';
 import 'customer_type_dropdown.dart';
 
-
 void showCustomerFormDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return CustomerFormDialog();
+      return const CustomerFormDialog();
     },
   );
 }
 
 class CustomerFormDialog extends StatefulWidget {
-  const CustomerFormDialog({Key? key}) : super(key: key);
+  const CustomerFormDialog({super.key});
 
   @override
   State<CustomerFormDialog> createState() => _CustomerFormDialogState();
@@ -59,15 +59,17 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
     fetchCustomerTypes();
   }
 
-
   Future<void> fetchCustomerTypes() async {
     try {
-      List<Map<String, dynamic>> fetchedData = await _customerTypeClass.fetchCustomerType();
+      List<Map<String, dynamic>> fetchedData =
+          await _customerTypeClass.fetchCustomerType();
       setState(() {
         customerTypes = fetchedData;
       });
     } catch (e) {
-      print('Error fetching customer types: $e');
+      if (kDebugMode) {
+        print('Error fetching customer types: $e');
+      }
     }
   }
 
@@ -75,9 +77,9 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
     if (formKey.currentState!.validate()) {
       if (selectCustomerType == null || cashOrCard == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
+          SnackBar(
             content: const Text('Please fill all required fields'),
-            backgroundColor:CustomColors.redColor,
+            backgroundColor: CustomColors.redColor,
           ),
         );
         return;
@@ -86,11 +88,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
       setState(() {
         _isLoading = true;
       });
-      print("About to send careOfId: $selectedCareOf");
-      print("Type of selectedCareOf: ${selectedCareOf.runtimeType}");
-      if (selectedCareOf != null) {
-        print("Parsed int value: ${int.parse(selectedCareOf.toString())}");
-      }
+
       try {
         final result = await _customerSaveService.saveCustomer(
           firmId: 3,
@@ -105,31 +103,42 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
               ? contact1Controller.text.trim()
               : null,
           creditOrCash: cashOrCard?.toLowerCase(),
-          // careOfId: selectedCareOf,
-          careOfId: selectedCareOf != null ? int.parse(selectedCareOf.toString()) : null,
+
+          careOfId: selectedCareOf != null
+              ? int.parse(selectedCareOf.toString())
+              : null,
         );
 
         if (result['status']) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Customer saved successfully'),
-              backgroundColor: Colors.green,
+            SnackBar(
+              content: const Text(
+                'Customer saved successfully',
+                style: TextStyle(fontFamily: 'PoppinsRegular'),
+              ),
+              backgroundColor: CustomColors.greenColor,
             ),
           );
-          Navigator.of(context).pop();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MainCustomerScreen()),
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(result['message'] ?? 'Failed to save customer'),
-              backgroundColor: Colors.red,
+              content: Text(
+                result['message'] ?? 'Failed to save customer',
+                style: const TextStyle(fontFamily: 'PoppinsRegular'),
+              ),
+              backgroundColor: CustomColors.redColor,
             ),
           );
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('An error occurred: $e'),
-            backgroundColor: Colors.red,
+            content: Text('An error occurred: $e' ,style:const TextStyle(fontFamily: 'PoppinsRegular'),),
+            backgroundColor: CustomColors.redColor,
           ),
         );
       } finally {
@@ -193,20 +202,23 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                           child: CustomerTypeDropdown(
                             hintText: 'Select a customer type',
                             onItemSelected: (value) {
-
                               final selectedType = customerTypes.firstWhere(
-                                    (type) => type['name'] == value,
+                                (type) => type['name'] == value,
                                 orElse: () => {'id': '1', 'name': value},
                               );
 
                               setState(() {
                                 selectCustomerType = value;
-                                selectedCustomerTypeId = selectedType['id'].toString();
+                                selectedCustomerTypeId =
+                                    selectedType['id'].toString();
 
-
-                                if (value.toLowerCase().contains('individual')) {
+                                if (value
+                                    .toLowerCase()
+                                    .contains('individual')) {
                                   selectCustomerType = 'Individual Customer';
-                                } else if (value.toLowerCase().contains('corporate')) {
+                                } else if (value
+                                    .toLowerCase()
+                                    .contains('corporate')) {
                                   selectCustomerType = 'Corporate Customer';
                                 }
                               });
@@ -229,33 +241,26 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                 if (selectCustomerType == 'Individual Customer') ...[
                   Row(
                     children: [
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Care Of',
                         isRequired: true,
                         width: 200,
-                        child:
-                        // CareOfDropdown(
-                        //   hintText: '-- Select Care Of --',
-                        //   onItemSelected: (value) {
-                        //     setState(() {
-                        //       selectedCareOf = value;
-                        //     });
-                        //   },
-                        //   validator: _requiredValidator,
-                        // ),
-                        CareOfDropdown(
+                        child: CareOfDropdown(
                           hintText: '-- Select Care Of --',
                           onItemSelected: (String value) {
                             setState(() {
                               selectedCareOf = int.parse(value);
-                              print("Setting selectedCareOf to: $selectedCareOf");
+                              if (kDebugMode) {
+                                print(
+                                    "Setting selectedCareOf to: $selectedCareOf");
+                              }
                             });
                           },
                           validator: _requiredValidator,
                         ),
                       ),
                       const SizedBox(width: 25),
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Customer Name',
                         isRequired: true,
                         width: 200,
@@ -266,7 +271,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                         ),
                       ),
                       const SizedBox(width: 25),
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Phone',
                         isRequired: true,
                         width: 200,
@@ -278,7 +283,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                         ),
                       ),
                       const SizedBox(width: 25),
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Email',
                         isRequired: true,
                         width: 200,
@@ -294,7 +299,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                 ] else if (selectCustomerType == 'Corporate Customer') ...[
                   Row(
                     children: [
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Customer Name',
                         isRequired: true,
                         width: 200,
@@ -305,7 +310,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                         ),
                       ),
                       const SizedBox(width: 25),
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Phone',
                         isRequired: true,
                         width: 200,
@@ -317,7 +322,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                         ),
                       ),
                       const SizedBox(width: 25),
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Email',
                         isRequired: true,
                         width: 200,
@@ -329,7 +334,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                         ),
                       ),
                       const SizedBox(width: 25),
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Contact Person',
                         isRequired: true,
                         width: 200,
@@ -344,7 +349,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Contact 1',
                         isRequired: true,
                         width: 200,
@@ -355,7 +360,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                         ),
                       ),
                       const SizedBox(width: 25),
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Contact 2',
                         isRequired: false,
                         width: 200,
@@ -365,7 +370,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                         ),
                       ),
                       const SizedBox(width: 25),
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'Website',
                         isRequired: false,
                         width: 200,
@@ -376,7 +381,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                         ),
                       ),
                       const SizedBox(width: 25),
-                      _buildFormField(
+                      buildTextFormField(
                         label: 'File Number',
                         isRequired: false,
                         width: 200,
@@ -392,7 +397,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    _buildFormField(
+                    buildTextFormField(
                       label: 'Credit / Cash',
                       isRequired: true,
                       width: 200,
@@ -408,7 +413,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                       ),
                     ),
                     const SizedBox(width: 25),
-                    _buildFormField(
+                    buildTextFormField(
                       label: 'License Number',
                       isRequired: false,
                       width: 200,
@@ -418,7 +423,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                       ),
                     ),
                     const SizedBox(width: 25),
-                    _buildFormField(
+                    buildTextFormField(
                       label: 'Trade License Expiry',
                       isRequired: false,
                       width: 200,
@@ -428,7 +433,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.calendar_today),
                             onPressed: () {
-                              _selectDate(context, dateController);
+                              selectDate(context, dateController);
                             },
                           ),
                         ),
@@ -457,7 +462,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                _buildFormField(
+                buildTextFormField(
                   label: 'Address',
                   isRequired: false,
                   width: 880,
@@ -493,7 +498,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    _buildSaveButton(),
+                    buildSaveButton(),
                   ],
                 ),
               ],
@@ -504,8 +509,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
     );
   }
 
-
-  Widget _buildSaveButton() {
+  Widget buildSaveButton() {
     return ElevatedButton(
       onPressed: _isLoading ? null : saveCustomerForm,
       style: ElevatedButton.styleFrom(
@@ -516,19 +520,18 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
         fixedSize: const Size(130, 55),
       ),
       child: _isLoading
-          ? CircularProgressIndicator(color:CustomColors.whiteColor)
+          ? CircularProgressIndicator(color: CustomColors.whiteColor)
           : Text(
-        'Save Customer',
-        style: TextStyle(
-            color: CustomColors.whiteColor,
-            fontFamily: 'PoppinsMedium',
-            fontSize: 09
-        ),
-      ),
+              'Save Customer',
+              style: TextStyle(
+                  color: CustomColors.whiteColor,
+                  fontFamily: 'PoppinsMedium',
+                  fontSize: 09),
+            ),
     );
   }
 
-  Widget _buildFormField({
+  Widget buildTextFormField({
     required String label,
     required bool isRequired,
     required Widget child,
@@ -547,7 +550,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                   style: TextStyle(
                     color: CustomColors.blackColor,
                     fontSize: 12,
-                    fontFamily: 'PoppinsMedium',
+                    fontFamily: 'PoppinsRegular',
                   ),
                 ),
                 if (isRequired)
@@ -556,8 +559,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
                     style: TextStyle(
                       color: CustomColors.redColor,
                       fontSize: 12,
-                      fontFamily: 'PoppinsMedium',
-                    ),
+                      fontFamily: 'PoppinsRegular',                    ),
                   ),
               ],
             ),
@@ -574,7 +576,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
       hintText: hint,
       hintStyle: TextStyle(
           color: CustomColors.borderColor,
-          fontFamily: 'PoppinsMedium',
+          fontFamily: 'PoppinsRegular',
           fontSize: 13),
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       border: OutlineInputBorder(
@@ -592,7 +594,7 @@ class _CustomerFormDialogState extends State<CustomerFormDialog> {
     );
   }
 
-  Future<void> _selectDate(
+  Future<void> selectDate(
       BuildContext context, TextEditingController controller) async {
     final DateTime? picked = await showDatePicker(
       context: context,

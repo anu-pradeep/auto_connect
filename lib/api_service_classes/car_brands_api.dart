@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:auto_connect/api_class/api_path.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,24 +24,16 @@ class CarBrandsClass {
                   'name': carbrand['name'],
                 })
             .toList();
-        if (kDebugMode) {
-          print('**********************');
-          print(extractedData);
-          print(token);
-        }
+
         await prefs.setString(brandsShareKey, json.encode(extractedData));
         return extractedData;
       } else {
-        if (kDebugMode) {
-          print('API Error: ${response.statusCode} - ${response.body}');
-        }
+
         throw Exception(
             'Failed to fetch vehicle brands ${response.reasonPhrase}');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('Error during API call: $e');
-      }
+
       throw Exception('Failed to fetch vehicle brands');
     }
   }

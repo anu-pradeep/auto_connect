@@ -21,12 +21,13 @@ class _CustomerTextFromState extends State<CustomerTextFrom> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 13,
-          fontFamily: 'PoppinsMedium',
+          fontFamily: 'PoppinsRegular',
+
         ),
         contentPadding:
-        const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // to adjust height and width of textformfield
+        const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
         filled: true,
-        fillColor: CustomColors.whiteColor, // Background inside TextField
+        fillColor: CustomColors.whiteColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(08.0),
           borderSide: BorderSide(color: CustomColors.greyColor, width: 0.5),

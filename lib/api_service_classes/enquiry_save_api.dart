@@ -1,7 +1,6 @@
 
 import 'dart:convert';
 import 'package:auto_connect/api_class/api_path.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,7 +18,7 @@ class EnquiryService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     int? userId = prefs.getInt('id');
-    // int? firmId = prefs.getInt('firm_id');
+
 
     if (userId == null) {
       return {
@@ -50,14 +49,11 @@ class EnquiryService {
         },
       );
 
-      if (kDebugMode) {
-        print('Response: ${response.body}');
-      }
+
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print(firmId);
-        print(userId);
+
         if (data['status'] == true) {
           return {
             'success': true,

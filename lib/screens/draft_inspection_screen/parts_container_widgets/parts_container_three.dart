@@ -170,7 +170,7 @@ class PartsContainer extends StatefulWidget {
 }
 
 class _PartsContainerState extends State<PartsContainer> {
-  // List to store rows of parts data
+
   List<PartsRowData> partsRows = [];
 
   @override
@@ -203,7 +203,7 @@ class _PartsContainerState extends State<PartsContainer> {
           width: 0.5,
         ),
       ),
-      // Adjust height based on number of rows
+
       height: 220 + (partsRows.length > 1 ? (partsRows.length - 1) * 60 : 0),
       width: 1250,
       child: Padding(
@@ -263,10 +263,10 @@ class _PartsContainerState extends State<PartsContainer> {
               ],
             ),
             const SizedBox(height: 10),
-            // Dynamic rows based on parts data
+
             ...partsRows.map((rowData) => Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: _buildPartsRow(rowData, partsRows.indexOf(rowData) == partsRows.length - 1),
+              child: buildPartsRow(rowData, partsRows.indexOf(rowData) == partsRows.length - 1),
             )),
           ],
         ),
@@ -274,7 +274,7 @@ class _PartsContainerState extends State<PartsContainer> {
     );
   }
 
-  Widget _buildPartsRow(PartsRowData rowData, bool isLastRow) {
+  Widget buildPartsRow(PartsRowData rowData, bool isLastRow) {
     return Row(
       children: [
         SizedBox(
@@ -348,7 +348,6 @@ class _PartsContainerState extends State<PartsContainer> {
 
   @override
   void dispose() {
-    // Clean up controllers when widget is disposed
     for (var row in partsRows) {
       row.quantityController.dispose();
       row.priceController.dispose();
@@ -360,7 +359,6 @@ class _PartsContainerState extends State<PartsContainer> {
   }
 }
 
-// Class to hold the controllers for each row
 class PartsRowData {
   final TextEditingController quantityController;
   final TextEditingController priceController;

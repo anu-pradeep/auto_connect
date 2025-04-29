@@ -86,14 +86,6 @@ class _PlateSourceDropdownState extends State<PlateSourceDropdown> {
     }
   }
 
-  // void _selectItem(String item) {
-  //   setState(() {
-  //     _searchController.text = item;
-  //   });
-  //   _hideDropdown();
-  //   widget.onItemSelected(item);
-  //   FocusScope.of(context).unfocus();
-  // }
 
   void selectCategory(Map<String, dynamic> emirate) {
     setState(() {
@@ -140,14 +132,12 @@ class _PlateSourceDropdownState extends State<PlateSourceDropdown> {
                           style: TextStyle(
                             color: CustomColors.blackColor,
                             fontSize: 15,
-                            fontFamily: 'PoppinsMedium',
+                            fontFamily: 'PoppinsRegular',
+
                           ),
                         ),
                       ),
-                      // TextButton(
-                      //   onPressed: () => selectCategory(_searchController.text),
-                      //   child: const Text("Add New Item"),
-                      // ),
+
                     ],
                   )
                 : ListView.builder(
@@ -164,7 +154,8 @@ class _PlateSourceDropdownState extends State<PlateSourceDropdown> {
                           style: TextStyle(
                             color: CustomColors.blackColor,
                             fontSize: 15,
-                            fontFamily: 'PoppinsMedium',
+                            fontFamily: 'PoppinsRegular',
+
                           ),
                         ),
                         onTap: () => selectCategory(emirate),
@@ -196,9 +187,9 @@ class _PlateSourceDropdownState extends State<PlateSourceDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsBold',
+          fontFamily: 'PoppinsRegular',
+
         ),
-        // prefixIcon:  Icon(Icons.search, color: CustomColors.borderColor),
         suffixIcon: IconButton(
           icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),
           onPressed: () {

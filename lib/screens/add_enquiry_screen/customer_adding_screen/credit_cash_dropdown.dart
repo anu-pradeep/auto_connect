@@ -1,5 +1,3 @@
-// Custom Searchable Dropdown Widget
-import 'package:auto_connect/api_service_classes/care_of_api.dart';
 import 'package:flutter/material.dart';
 
 import '../../common_custom_widgets/colors.dart';
@@ -35,12 +33,12 @@ class _CreditCashDropdownState extends State<CreditCashDropdown> {
   void initState() {
     super.initState();
     filteredItems = List.from(widget.items);
-    _searchController.addListener(_filterItems);
+    _searchController.addListener(filterItems);
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
@@ -55,7 +53,7 @@ class _CreditCashDropdownState extends State<CreditCashDropdown> {
     }
   }
 
-  void _filterItems() {
+  void filterItems() {
     final query = _searchController.text.toLowerCase();
     setState(() {
       filteredItems = widget.items
@@ -63,24 +61,24 @@ class _CreditCashDropdownState extends State<CreditCashDropdown> {
           .toList();
     });
 
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 
-  void _selectItem(String item) {
+  void selectItem(String item) {
     setState(() {
       _searchController.text = item;
     });
-    _hideDropdown();
+    hideDropdown();
     widget.onItemSelected(item);
     FocusScope.of(context).unfocus();
   }
 
 
-  void _showDropdown() {
-    _hideDropdown();
+  void showDropdown() {
+    hideDropdown();
 
     final RenderBox renderBox =
     _fieldKey.currentContext!.findRenderObject() as RenderBox;
@@ -133,7 +131,7 @@ class _CreditCashDropdownState extends State<CreditCashDropdown> {
                       fontFamily: 'PoppinsRegular',
                     ),
                   ),
-                  onTap: () => _selectItem(item),
+                  onTap: () => selectItem(item),
                 );
               },
             ),
@@ -145,17 +143,17 @@ class _CreditCashDropdownState extends State<CreditCashDropdown> {
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
 
   @override
   void dispose() {
-    _searchController.removeListener(_filterItems);
+    _searchController.removeListener(filterItems);
     _searchController.dispose();
     _focusNode.dispose();
-    _hideDropdown();
+    hideDropdown();
     super.dispose();
   }
 

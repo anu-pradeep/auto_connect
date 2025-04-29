@@ -233,23 +233,5 @@ class _CardRowsState extends State<CardRows> {
       Navigator.push(context, MaterialPageRoute(builder: (context)=>const MainJobScreen()));
     }
   }
-//   // job list api calling
-// Future<void> fetchJobList()
-// async {
-//   final jobService = JobListService();
-//     setState(() {
-//       jobListLoading = true;
-//     });
-//   final response = await jobService.fetchJobsList(3);
-//     setState(() {
-//       jobListLoading = false;
-//     });
-//   if(response['success'])
-//     {
-//       if (kDebugMode) {
-//         print('Job List : $response');
-//       }
-//       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const MainJobScreen()));
-//     }
-// }
+
 }

@@ -81,11 +81,12 @@ class _TypeOfCustomerDropdownState extends State<TypeOfCustomerDropdown> {
             ),
             child: filteredItems.isEmpty
                 ?  Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Text("No items found",style: TextStyle(
                 color: CustomColors.blackColor,
                 fontSize: 15,
-                fontFamily: 'PoppinsMedium',
+                fontFamily: 'PoppinsRegular',
+
               ),),
             )
                 : ListView.builder(
@@ -100,7 +101,8 @@ class _TypeOfCustomerDropdownState extends State<TypeOfCustomerDropdown> {
                     style: TextStyle(
                       color: CustomColors.blackColor,
                       fontSize: 15,
-                      fontFamily: 'PoppinsMedium',
+                      fontFamily: 'PoppinsRegular',
+
                     ),
                   ),
                   onTap: () => _selectItem(item),
@@ -131,7 +133,8 @@ class _TypeOfCustomerDropdownState extends State<TypeOfCustomerDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsMedium',
+          fontFamily: 'PoppinsRegular',
+
         ),
         suffixIcon: IconButton(
           icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),

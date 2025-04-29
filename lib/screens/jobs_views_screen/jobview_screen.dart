@@ -10,11 +10,6 @@ import 'card_for_services.dart';
 import 'container_row.dart';
 import 'customer_details_card.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: JobViewScreen(),
-  ));
-}
 
 class JobViewScreen extends StatefulWidget {
   const JobViewScreen({super.key});
@@ -98,8 +93,8 @@ class _JobViewScreenState extends State<JobViewScreen> {
                   child: CardForServices(),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
+              const Padding(
+                padding: EdgeInsets.all(15.0),
                 child: SizedBox( height: 210,
                     width: 1250,child: CardForProducts()),
               )

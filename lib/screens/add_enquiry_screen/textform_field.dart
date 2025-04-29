@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../common_custom_widgets/colors.dart';
 
-class threeTextFromField extends StatefulWidget {
+class ThreeTextFromField extends StatefulWidget {
   final String textHint;
   final TextEditingController controller;
-  const threeTextFromField({super.key, required this.textHint, required this.controller});
+  const ThreeTextFromField(
+      {super.key, required this.textHint, required this.controller});
 
   @override
-  State<threeTextFromField> createState() => _threeTextFromFieldState();
+  State<ThreeTextFromField> createState() => _ThreeTextFromFieldState();
 }
 
-class _threeTextFromFieldState extends State<threeTextFromField> {
+class _ThreeTextFromFieldState extends State<ThreeTextFromField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -22,12 +23,12 @@ class _threeTextFromFieldState extends State<threeTextFromField> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsMedium',
+          fontFamily: 'PoppinsRegular',
         ),
         contentPadding:
-        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+            const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
         filled: true,
-        fillColor: CustomColors.whiteColor, // Background inside TextField
+        fillColor: CustomColors.whiteColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(08.0),
           borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),

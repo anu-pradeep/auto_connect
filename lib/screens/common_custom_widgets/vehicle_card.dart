@@ -23,9 +23,8 @@ class _VehicleCardState extends State<VehicleCard> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      // crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // const SizedBox(width: 16),
+
 
         Container(
           width: 250,

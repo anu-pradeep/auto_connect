@@ -20,7 +20,6 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       backgroundColor: CustomColors.whiteColor,
       appBar: const CustomAppbar(),
-      // drawer:const CustomDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -28,7 +27,7 @@ class _DashboardState extends State<Dashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Heading Section
+
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: HeadingText(

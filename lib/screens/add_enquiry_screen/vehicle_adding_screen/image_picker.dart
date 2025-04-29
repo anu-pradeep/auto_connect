@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; // Import image_picker
+import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-import '../../common_custom_widgets/colors.dart'; // Assuming this is your custom colors file
+import '../../common_custom_widgets/colors.dart';
 
 class VehicleImagePicker extends StatefulWidget {
   const VehicleImagePicker({super.key});
@@ -13,7 +13,7 @@ class VehicleImagePicker extends StatefulWidget {
 
 class _VehicleImagePickerState extends State<VehicleImagePicker> {
   File? _selectedFile;
-  final ImagePicker _picker = ImagePicker(); // Create an instance of ImagePicker
+  final ImagePicker _picker = ImagePicker();
 
   // Function to pick an image from the gallery
   Future<void> pickImageFromGallery() async {
@@ -48,7 +48,13 @@ class _VehicleImagePickerState extends State<VehicleImagePicker> {
             children: [
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Choose from Gallery'),
+                title: Text(
+                  'Choose from Gallery',
+                  style: TextStyle(
+                    fontFamily: 'PoppinsRegular',
+                    color: CustomColors.blackColor,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context); // Close the bottom sheet
                   pickImageFromGallery(); // Pick image from gallery
@@ -56,7 +62,13 @@ class _VehicleImagePickerState extends State<VehicleImagePicker> {
               ),
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: const Text('Take a Photo'),
+                title: Text(
+                  'Take a Photo',
+                  style: TextStyle(
+                    fontFamily: 'PoppinsRegular',
+                    color: CustomColors.blackColor,
+                  ),
+                ),
                 onTap: () {
                   Navigator.pop(context); // Close the bottom sheet
                   pickImageFromCamera(); // Take a photo using the camera
@@ -80,7 +92,7 @@ class _VehicleImagePickerState extends State<VehicleImagePicker> {
             "Image",
             style: TextStyle(
                 fontSize: 13,
-                fontFamily: 'PoppinsMedium',
+                fontFamily: 'PoppinsRegular',
                 color: CustomColors.blackColor),
           ),
           const SizedBox(height: 10),
@@ -102,27 +114,28 @@ class _VehicleImagePickerState extends State<VehicleImagePicker> {
                 ),
                 child: _selectedFile != null
                     ? ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.file(
-                    _selectedFile!,
-                    width: 120,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
-                )
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.file(
+                          _selectedFile!,
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,
+                        ),
+                      )
                     : Center(
-                  child: Icon(
-                    Icons.image,
-                    color: CustomColors.greyColor,
-                    size: 50,
-                  ),
-                ),
+                        child: Icon(
+                          Icons.image,
+                          color: CustomColors.greyColor,
+                          size: 50,
+                        ),
+                      ),
               ),
               Positioned(
                 top: 5,
                 right: 5,
                 child: GestureDetector(
-                  onTap: _showImageSourceBottomSheet, // Show bottom sheet to choose source
+                  onTap:
+                      _showImageSourceBottomSheet, // Show bottom sheet to choose source
                   child: Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(

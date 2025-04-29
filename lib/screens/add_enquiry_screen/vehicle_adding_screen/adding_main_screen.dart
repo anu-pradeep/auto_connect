@@ -8,10 +8,10 @@ import 'package:auto_connect/screens/add_enquiry_screen/vehicle_adding_screen/ye
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../api_service_classes/new_vehicle_save.dart';
 import '../../common_custom_widgets/colors.dart';
 import '../../common_custom_widgets/custom_heading_text.dart';
+import '../../main_vehicle_screen/main_vehicle_screen.dart';
 import '../customer_dropdown_field.dart';
 import 'cancel_button.dart';
 import 'brands_dropdown.dart';
@@ -254,12 +254,7 @@ class _MainScreenOfVehicleAddingState extends State<MainScreenOfVehicleAdding> {
                              selectedCarModels =carModelId;
                            });
                           },
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return 'required';
-                          //   }
-                          //   return null;
-                          // },
+
                         ),
                       ),
                     ],
@@ -370,7 +365,7 @@ class _MainScreenOfVehicleAddingState extends State<MainScreenOfVehicleAdding> {
                 children: [
                   CancelButton(
                     onClick: () {
-                      // Clear all text controllers
+
                       plateNoController.clear();
                       platePrefixController.clear();
                       chassisNoController.clear();
@@ -378,7 +373,6 @@ class _MainScreenOfVehicleAddingState extends State<MainScreenOfVehicleAdding> {
                       originController.clear();
                       colourController.clear();
 
-                      // Reset dropdown selections
                       setState(() {
                         selectedYear = null;
                         selectedCarCompany = null;
@@ -390,8 +384,7 @@ class _MainScreenOfVehicleAddingState extends State<MainScreenOfVehicleAdding> {
                     },
                   ),
                   const SizedBox(width: 10),
-                  // SaveButton(onClick: _saveForm),
-                  SaveButton(onClick:_saveVehicle),
+                  SaveButton(onClick:saveVehicle),
 
                 ],
               ),
@@ -401,20 +394,20 @@ class _MainScreenOfVehicleAddingState extends State<MainScreenOfVehicleAdding> {
       ),
     );
   }
-  void _saveVehicle() async {
-    // Validate the form before saving
+  void saveVehicle() async {
+
     if (_formKey.currentState!.validate()) {
       try {
-        // Parse and convert selected values
-        int stateId = int.parse(selectedPlateSource ?? '0'); // Convert plate source to state ID
+
+        int stateId = int.parse(selectedPlateSource ?? '0');
         int brandId = int.parse(selectedCarCompany ?? '0');
         int modelId = int.parse(selectedCarModels ?? '0');
         int registerYear = int.parse(selectedCarYear ?? '0');
 
-        // Create an instance of VehicleSaveService
+
         final vehicleSaveService = VehicleSaveService();
 
-        // Call the saveVehicle method
+
         final result = await vehicleSaveService.saveVehicle(
           stateId: stateId,
           plateType: selectedPlateCategory ?? '',
@@ -427,45 +420,46 @@ class _MainScreenOfVehicleAddingState extends State<MainScreenOfVehicleAdding> {
           chassisNumber: chassisNoController.text.isNotEmpty ? chassisNoController.text : null,
           engineNumber: engineNoController.text.isNotEmpty ? engineNoController.text : null,
           colour: colourController.text.isNotEmpty ? colourController.text : null,
-          // image: null, // You'll need to implement image upload logic separately
+          // image: null,
         );
 
-        // Handle the save result
+
         if (result['status']) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(result['message'] ?? 'Vehicle saved successfully'),
-              backgroundColor: Colors.green,
+              content: Text(result['message'] ?? 'Vehicle saved successfully',style:  TextStyle(fontFamily: 'PoppinsRegular',  color: CustomColors.blackColor,),),
+              backgroundColor: CustomColors.greenColor,
             ),
           );
-
-
-          Navigator.of(context).pop();
-          Navigator.of(context).pop();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const MainVehicleScreen()),
+          );
 
 
         } else {
-          // Show error dialog or snackbar
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(result['message'] ?? 'Failed to save vehicle'),
-              backgroundColor: Colors.red,
+              content: Text(result['message'] ?? 'Failed to save vehicle',style:  TextStyle(fontFamily: 'PoppinsRegular' , color: CustomColors.blackColor,),),
+              backgroundColor:CustomColors.redColor,
             ),
           );
-          Navigator.of(context)
-              .pop();
+
         }
       } catch (e) {
         if (kDebugMode) {
           print('Error saving vehicle: $e');
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('An error occurred while saving the vehicle'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //    SnackBar(
+        //     content: const Text('An error occurred while saving the vehicle',style: TextStyle(fontFamily: 'PoppinsRegular'),),
+        //     backgroundColor: CustomColors.redColor,
+        //   ),
+        // );
       }
+
     }
   }
 }

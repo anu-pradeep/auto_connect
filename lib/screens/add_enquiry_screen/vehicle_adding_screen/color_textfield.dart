@@ -6,7 +6,7 @@ class ColourTextField extends StatelessWidget {
   final TextEditingController controller;
 
 
-  ColourTextField({
+  const ColourTextField({
     super.key,
 
     required this.controller,
@@ -23,7 +23,7 @@ class ColourTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: CustomColors.textFormTextColor,
             fontSize: 15,
-            fontFamily: 'PoppinsBold',
+            fontFamily: 'PoppinsRegular',
           ),
           filled: true,
           fillColor: CustomColors.whiteColor,

@@ -28,7 +28,7 @@ class _SignInElevatedButtonState extends State<SignInElevatedButton> {
             widget.text,
             style: TextStyle(
                 color: CustomColors.whiteColor,
-                fontFamily: 'PoppinsBold',
+                fontFamily: 'PoppinsMedium',
                 fontSize: 20),
           )),
     );

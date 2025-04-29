@@ -19,12 +19,13 @@ class PartsTextForm extends StatelessWidget {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 13,
-          fontFamily: 'PoppinsMedium',
+          fontFamily: 'PoppinsRegular',
+
         ),
         contentPadding:
-        const EdgeInsets.symmetric(vertical: 13.0, horizontal: 16.0), // to adjust height and width of textformfield
+        const EdgeInsets.symmetric(vertical: 13.0, horizontal: 16.0),
         filled: true,
-        fillColor: CustomColors.whiteColor, // Background inside TextField
+        fillColor: CustomColors.whiteColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(08.0),
           borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),

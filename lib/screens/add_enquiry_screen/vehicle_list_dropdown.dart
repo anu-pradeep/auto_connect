@@ -38,10 +38,10 @@ class _SearchableVehicleDropdownState extends State<SearchableVehicleDropdown> {
   void initState() {
     super.initState();
     fetchVehicleData();
-    _searchController.addListener(_filterVehicles);
+    _searchController.addListener(filterVehicles);
     _isScrollController.addListener(() {
       if (_isScrollController.position.pixels ==
-          _isScrollController.position.maxScrollExtent &&
+              _isScrollController.position.maxScrollExtent &&
           hasMore &&
           !loading) {
         loadVehicleData();
@@ -49,22 +49,21 @@ class _SearchableVehicleDropdownState extends State<SearchableVehicleDropdown> {
     });
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
 
   @override
   void dispose() {
-    _hideDropdown();
+    hideDropdown();
     _searchController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
 
-// scroll controller function
   Future<void> loadVehicleData() async {
     if (loading) return;
     setState(() {
@@ -87,6 +86,7 @@ class _SearchableVehicleDropdownState extends State<SearchableVehicleDropdown> {
       });
     }
   }
+
   Future<void> fetchVehicleData() async {
     try {
       final vehicleSelection = VehicleListClass();
@@ -102,7 +102,7 @@ class _SearchableVehicleDropdownState extends State<SearchableVehicleDropdown> {
     }
   }
 
-  void _filterVehicles() {
+  void filterVehicles() {
     final query = _searchController.text.toLowerCase();
     setState(() {
       filteredVehicles = vehicles
@@ -113,34 +113,31 @@ class _SearchableVehicleDropdownState extends State<SearchableVehicleDropdown> {
           .toList();
     });
 
-    // Update the dropdown with filtered results
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 
-  void _selectVehicle(Map<String, dynamic> vehicle) {
+  void selectVehicle(Map<String, dynamic> vehicle) {
     setState(() {
       selectedVehicle = vehicle['id'].toString();
       _searchController.text =
           '${vehicle['plate_prefix']}- ${vehicle['register_number']}';
     });
-    _hideDropdown();
+    hideDropdown();
     widget.onItemSelected(selectedVehicle!);
     FocusScope.of(context).unfocus();
   }
 
-  void _showDropdown() {
-    _hideDropdown(); // Remove any existing dropdown
+  void showDropdown() {
+    hideDropdown();
 
-    // Get the position and size of the text field
     final RenderBox renderBox =
         _fieldKey.currentContext!.findRenderObject() as RenderBox;
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
 
-    // Create and show the overlay
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         left: offset.dx,
@@ -150,56 +147,55 @@ class _SearchableVehicleDropdownState extends State<SearchableVehicleDropdown> {
           elevation: 4.0,
           borderRadius: BorderRadius.circular(8.0),
           child: Container(
-            constraints: const BoxConstraints(maxHeight: 200),
-            decoration: BoxDecoration(
-              color: CustomColors.whiteColor,
-              border: Border.all(color: CustomColors.borderColor),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: filteredVehicles.isEmpty
-                ? Center(
-                    child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "No vehicles found",
-                      style: TextStyle(
-                        color: CustomColors.blackColor,
-                        fontSize: 15,
-                        fontFamily: 'PoppinsMedium',
-                      ),
-                    ),
-                  ))
-                : ListView.builder(
-              shrinkWrap: true,
-              controller: _isScrollController,
-              padding: EdgeInsets.zero,
-              itemCount: filteredVehicles.length + (hasMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == filteredVehicles.length) {
-                  return Center(
-                    child: Padding(
+              constraints: const BoxConstraints(maxHeight: 200),
+              decoration: BoxDecoration(
+                color: CustomColors.whiteColor,
+                border: Border.all(color: CustomColors.borderColor),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: filteredVehicles.isEmpty
+                  ? Center(
+                      child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(
-                        color: CustomColors.borderColor,
+                      child: Text(
+                        "No vehicles found",
+                        style: TextStyle(
+                          color: CustomColors.blackColor,
+                          fontSize: 15,
+                          fontFamily: 'PoppinsRegular',
+                        ),
                       ),
-                    ),
-                  );
-                }
-                final vehicle = filteredVehicles[index];
-                return ListTile(
-                  title: Text(
-                    '${vehicle['plate_prefix']}- ${vehicle['register_number']}',
-                    style: TextStyle(
-                      color: CustomColors.blackColor,
-                      fontSize: 15,
-                      fontFamily: 'PoppinsMedium',
-                    ),
-                  ),
-                  onTap: () => _selectVehicle(vehicle),
-                );
-              },
-            )
-          ),
+                    ))
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      controller: _isScrollController,
+                      padding: EdgeInsets.zero,
+                      itemCount: filteredVehicles.length + (hasMore ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index == filteredVehicles.length) {
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(
+                                color: CustomColors.borderColor,
+                              ),
+                            ),
+                          );
+                        }
+                        final vehicle = filteredVehicles[index];
+                        return ListTile(
+                          title: Text(
+                            '${vehicle['plate_prefix']}- ${vehicle['register_number']}',
+                            style: TextStyle(
+                              color: CustomColors.blackColor,
+                              fontSize: 15,
+                              fontFamily: 'PoppinsRegular',
+                            ),
+                          ),
+                          onTap: () => selectVehicle(vehicle),
+                        );
+                      },
+                    )),
         ),
       ),
     );
@@ -207,7 +203,7 @@ class _SearchableVehicleDropdownState extends State<SearchableVehicleDropdown> {
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -223,12 +219,12 @@ class _SearchableVehicleDropdownState extends State<SearchableVehicleDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsBold',
+          fontFamily: 'PoppinsRegular',
         ),
         errorStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsBold',
+          fontFamily: 'PoppinsRegular',
         ),
         suffixIcon: IconButton(
           icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),

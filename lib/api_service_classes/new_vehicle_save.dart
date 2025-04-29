@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,43 +33,27 @@ class VehicleSaveService{
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        // body: jsonEncode({
-        //   'state_id': stateId,
-        //   'plate_type': plateType,
-        //   'register_number': registerNumber,
-        //   'register_year': registerYear,
-        //   'brand_id': brandId,
-        //   'plate_prefix': platePrefix,
-        //   'customer_id': customerId,
-        //   'chassis_number': chassisNumber,
-        //   'engine_number': engineNumber,
-        //   'colour': colour,
-        //   // 'image': image,
-        //   'is_imported': 0,
-        // }),
+
         body: jsonEncode({
           'state_id': stateId,
           'plate_type': plateType,
           'register_number': registerNumber,
           'register_year': registerYear,
           'brand_id': brandId,
-          'model_id': modelId,  // Add this line
+          'model_id': modelId,
           'plate_prefix': platePrefix,
           'customer_id': customerId,
           'chassis_number': chassisNumber,
           'engine_number': engineNumber,
           'colour': colour,
           'is_imported': 0,
+          // 'image': image,
         }),
       );
 
-      // Print debug information in debug mode
-      if (kDebugMode) {
-        print('Save Vehicle Response Status Code: ${response.statusCode}');
-        print('Save Vehicle Response Body: ${response.body}');
-      }
 
-      // Handle successful response
+
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = json.decode(response.body);
         return {
@@ -79,7 +62,7 @@ class VehicleSaveService{
           'message': responseData['message'] ?? 'Vehicle saved successfully'
         };
       }
-      // Handle unsuccessful response
+
       else {
         return {
           'status': false,
@@ -88,11 +71,9 @@ class VehicleSaveService{
         };
       }
     }
-    // Handle any exceptions during the process
+
     catch (e) {
-      if (kDebugMode) {
-        print('Error saving vehicle: $e');
-      }
+
       return {
         'status': false,
         'data': null,

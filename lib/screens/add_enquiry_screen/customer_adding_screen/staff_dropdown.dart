@@ -8,13 +8,11 @@ import '../../common_custom_widgets/colors.dart';
 class StaffListDropdown extends StatefulWidget {
   final String hintText;
   final Function(String) onItemSelected;
-  // final String? Function(String?) validator;
 
   const StaffListDropdown({
     super.key,
     required this.hintText,
     required this.onItemSelected,
-    // required this.validator,
   });
 
   @override
@@ -43,7 +41,7 @@ class _StaffListDropdownState extends State<StaffListDropdown> {
   void initState() {
     super.initState();
     fetchStaffData();
-    _searchController.addListener(_filterStaffs);
+    _searchController.addListener(filterStaffs);
     _staffScrollController.addListener(() {
       if (_staffScrollController.position.pixels >
               _staffScrollController.position.maxScrollExtent - 100 &&
@@ -54,16 +52,16 @@ class _StaffListDropdownState extends State<StaffListDropdown> {
     });
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
 
   @override
   void dispose() {
-    _hideDropdown();
+    hideDropdown();
     _searchController.dispose();
     _focusNode.dispose();
     _staffScrollController.dispose();
@@ -109,16 +107,16 @@ class _StaffListDropdownState extends State<StaffListDropdown> {
     }
   }
 
-  void _filterStaffs() {
+  void filterStaffs() {
     final query = _searchController.text.toLowerCase();
     setState(() {
       filteredStaffs = staffs
           .where((staff) => staff['name'].toLowerCase().contains(query))
           .toList();
     });
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 void selectStaff(Map<String,dynamic>staff)
@@ -128,14 +126,14 @@ void selectStaff(Map<String,dynamic>staff)
     _searchController.text = staff['name'];
     errorText =null;
   });
-  _hideDropdown();
+  hideDropdown();
   widget.onItemSelected(selectedStaffs!);
   FocusScope.of(context).unfocus();
 }
 
 
-  void _showDropdown() {
-    _hideDropdown();
+  void showDropdown() {
+    hideDropdown();
 
     final RenderBox renderBox =
         _fieldKey.currentContext!.findRenderObject() as RenderBox;
@@ -166,7 +164,7 @@ void selectStaff(Map<String,dynamic>staff)
                   style: TextStyle(
                     color: CustomColors.blackColor,
                     fontSize: 15,
-                    fontFamily: 'PoppinsMedium',
+                    fontFamily: 'PoppinsRegular',
                   ),
                 ),
               ),
@@ -192,7 +190,7 @@ void selectStaff(Map<String,dynamic>staff)
                           style: TextStyle(
                             color: CustomColors.blackColor,
                             fontSize: 15,
-                            fontFamily: 'PoppinsMedium',
+                            fontFamily: 'PoppinsRegular',
                           ),
                         ),
                         onTap: () => selectStaff(staff),
@@ -207,7 +205,7 @@ void selectStaff(Map<String,dynamic>staff)
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -224,9 +222,8 @@ void selectStaff(Map<String,dynamic>staff)
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 12,
-          fontFamily: 'PoppinsMedium',
+          fontFamily: 'PoppinsRegular',
         ),
-        // prefixIcon:  Icon(Icons.search, color: CustomColors.borderColor),
         suffixIcon: IconButton(
           icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),
           onPressed: () {

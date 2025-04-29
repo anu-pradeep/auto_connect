@@ -31,7 +31,7 @@ class _CardForProductsState extends State<CardForProducts> {
                   fontWeight: FontWeight.bold,
                   fontFamily: 'PoppinsMedium'),
             ),
-            // const SizedBox(height: 10),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

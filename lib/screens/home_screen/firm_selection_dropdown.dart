@@ -79,7 +79,8 @@ class _SearchableFirmDropdownState extends State<SearchableFirmDropdown> {
                         style: TextStyle(
                           color: CustomColors.blackColor,
                           fontSize: 15,
-                          fontFamily: 'PoppinsMedium',
+                          fontFamily: 'PoppinsRegular',
+
                         ),
                       ),
                     ),
@@ -95,7 +96,8 @@ class _SearchableFirmDropdownState extends State<SearchableFirmDropdown> {
                           style: TextStyle(
                             color: CustomColors.blackColor,
                             fontSize: 15,
-                            fontFamily: 'PoppinsMedium',
+                            fontFamily: 'PoppinsRegular',
+
                           ),
                         ),
                         onTap: () => _selectFirm(firm),
@@ -133,7 +135,8 @@ class _SearchableFirmDropdownState extends State<SearchableFirmDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsMedium',
+          fontFamily: 'PoppinsRegular',
+
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),

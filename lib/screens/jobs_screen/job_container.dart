@@ -1,6 +1,7 @@
 import 'package:auto_connect/screens/common_custom_widgets/colors.dart';
-import 'package:auto_connect/screens/jobs_screen/job_dropdown.dart';
 import 'package:flutter/material.dart';
+import '../Enquiry_screen/date_selection_dropdown.dart';
+import '../add_enquiry_screen/customer_dropdown_field.dart';
 import 'job_gridview.dart';
 import 'job_textform.dart';
 
@@ -12,36 +13,46 @@ class JobScreenContainer extends StatefulWidget {
 }
 
 class _JobScreenContainerState extends State<JobScreenContainer> {
+  final TextEditingController jobKeywordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: CustomColors.whiteColor,
         borderRadius: BorderRadius.circular(10.0),
-
       ),
       height: 550,
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(width:380,child: JobTextForm(jobText: 'Keyword',)),
-                SizedBox(width:380,child: JobTextForm(jobText: 'Select Date Range',)),
-                SizedBox(width:380,child: JobsDropdown(jobHint: 'Customer')),
+                SizedBox(
+                    width: 380,
+                    child: JobTextForm(
+                      jobText: 'Keyword',
+                      controller: jobKeywordController,
+                    )),
+                SizedBox(
+                  width: 380,
+                  child: SelectDateRangeDropdown(
+                    onDateRangeSelected:
+                        (DateTime? startDate, DateTime? endDate) {},
+                  ),
+                ),
+                 SizedBox(
+                    width: 380, child: SearchableCustomerDropdown(
+                  hintText: 'Customer',
+                  onItemSelected: (String) {},
+                )),
               ],
             ),
           ),
-          SizedBox(height: 20),
-          // Divider(
-          //     thickness: 0.5,
-          //     indent: 12,
-          //     endIndent: 12,
-          //     color: CustomColors.borderColor),
-          JobGridview(),
+          const SizedBox(height: 20),
+          const JobGridview(),
         ],
       ),
     );

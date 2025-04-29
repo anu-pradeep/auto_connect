@@ -48,16 +48,16 @@ class _CarModelsDropdownState extends State<CarModelsDropdown> {
     });
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
 
   @override
   void dispose() {
-    _hideDropdown();
+    hideDropdown();
     _searchController.dispose();
     _modelScrollController.dispose();
     super.dispose();
@@ -111,9 +111,9 @@ class _CarModelsDropdownState extends State<CarModelsDropdown> {
               .contains(query))
           .toList();
     });
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 
@@ -122,13 +122,13 @@ class _CarModelsDropdownState extends State<CarModelsDropdown> {
       selectedModels = models['vehicle_brand_id'].toString();
       _searchController.text = '${models['name']}';
     });
-    _hideDropdown();
+    hideDropdown();
     widget.onItemSelected(selectedModels!);
     FocusScope.of(context).unfocus();
   }
 
-  void _showDropdown() {
-    _hideDropdown();
+  void showDropdown() {
+    hideDropdown();
 
     final RenderBox renderBox =
         _fieldKey.currentContext!.findRenderObject() as RenderBox;
@@ -159,7 +159,7 @@ class _CarModelsDropdownState extends State<CarModelsDropdown> {
                       style: TextStyle(
                         color: CustomColors.blackColor,
                         fontSize: 15,
-                        fontFamily: 'PoppinsMedium',
+                        fontFamily: 'PoppinsRegular',
                       ),
                     ),
                   ))
@@ -182,11 +182,11 @@ class _CarModelsDropdownState extends State<CarModelsDropdown> {
                       final carModels = filteredModels[index];
                       return ListTile(
                         title: Text(
-                         '${carModels['vehicle_brand_id']}-${carModels['name']}',
+                          '${carModels['vehicle_brand_id']}-${carModels['name']}',
                           style: TextStyle(
                             color: CustomColors.blackColor,
                             fontSize: 15,
-                            fontFamily: 'PoppinsMedium',
+                            fontFamily: 'PoppinsRegular',
                           ),
                         ),
                         onTap: () => _selectModels(carModels),
@@ -201,7 +201,7 @@ class _CarModelsDropdownState extends State<CarModelsDropdown> {
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -217,7 +217,7 @@ class _CarModelsDropdownState extends State<CarModelsDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsMedium',
+          fontFamily: 'PoppinsRegular',
         ),
         suffixIcon: IconButton(
           icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),

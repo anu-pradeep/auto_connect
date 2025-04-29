@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import '../common_custom_widgets/colors.dart';
 
 class PolicyNoTextField extends StatelessWidget {
-
   final TextEditingController controller;
   final String? Function(String?)? validator;
-   PolicyNoTextField(
-      {super.key,  required this.controller,required this.validator});
+  PolicyNoTextField(
+      {super.key, required this.controller, required this.validator});
   bool isInsured = false;
   @override
   Widget build(BuildContext context) {
@@ -17,9 +16,10 @@ class PolicyNoTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'Policy number ',
         hintStyle: TextStyle(
-            color: CustomColors.textFormTextColor,
-            fontSize: 15,
-            fontFamily: 'PoppinsBold'),
+          color: CustomColors.textFormTextColor,
+          fontSize: 15,
+          fontFamily: 'PoppinsRegular',
+        ),
         filled: true,
         fillColor: CustomColors.whiteColor,
         border: OutlineInputBorder(
@@ -36,13 +36,6 @@ class PolicyNoTextField extends StatelessWidget {
         ),
       ),
       validator: validator,
-      // validator: (value){
-      //   if(isInsured && (value == null|| value.isEmpty))
-      //   {
-      //     return "Required";
-      //   }
-      //   return null;
-      // },
     );
   }
 }

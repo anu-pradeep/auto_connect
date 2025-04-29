@@ -4,13 +4,11 @@ import '../../common_custom_widgets/colors.dart';
 class PartsTaxDropdown extends StatefulWidget {
   final String hintText;
   final Function(String) onItemSelected;
-  // final String? Function(String?) validator;
 
   const PartsTaxDropdown({
     super.key,
     required this.hintText,
     required this.onItemSelected,
-    // required this.validator,
   });
 
   @override
@@ -24,7 +22,7 @@ class _PartsTaxDropdownState extends State<PartsTaxDropdown> {
   final GlobalKey _fieldKey = GlobalKey();
   OverlayEntry? _overlayEntry;
 
-  List<String> items = []; // Start with an empty list
+  List<String> items = [];
   List<String> filteredItems = [];
 
   @override
@@ -98,12 +96,14 @@ class _PartsTaxDropdownState extends State<PartsTaxDropdown> {
               children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("No items found"),
+                  child: Text("No items found",),
                 ),
                 TextButton(
                   onPressed: () => _addNewItem(_searchController.text),
-                  child: const Text("Add New Item"),
-                ),
+                  child: Text("Add New Item", style: TextStyle(
+                    color: CustomColors.blackColor,
+                    fontFamily: 'PoppinsRegular',),
+                ),)
               ],
             )
                 : ListView.builder(
@@ -118,7 +118,8 @@ class _PartsTaxDropdownState extends State<PartsTaxDropdown> {
                     style: TextStyle(
                       color: CustomColors.blackColor,
                       fontSize: 15,
-                      fontFamily: 'PoppinsMedium',
+                      fontFamily: 'PoppinsRegular',
+
                     ),
                   ),
                   onTap: () => _selectItem(item),
@@ -150,9 +151,9 @@ class _PartsTaxDropdownState extends State<PartsTaxDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsBold',
+          fontFamily: 'PoppinsRegular',
+
         ),
-        // prefixIcon:  Icon(Icons.search, color: CustomColors.borderColor),
         suffixIcon: IconButton(
           icon:  Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),
           onPressed: () {

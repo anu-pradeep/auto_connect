@@ -4,7 +4,7 @@ import '../common_custom_widgets/colors.dart';
 class IsConvertedDropdown extends StatefulWidget {
   final String hintText;
   final Function(String) onItemSelected;
-  // final String? Function(String?) validator;
+
   final List<String> items;
 
   const IsConvertedDropdown({
@@ -12,7 +12,7 @@ class IsConvertedDropdown extends StatefulWidget {
     required this.hintText,
     required this.onItemSelected,
     required this.items,
-    // required this.validator,
+
   });
 
   @override
@@ -153,7 +153,7 @@ class _IsConvertedDropdownState extends State<IsConvertedDropdown> {
       key: _fieldKey,
       controller: _searchController,
       focusNode: _focusNode,
-      // validator: widget.validator,
+
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: TextStyle(

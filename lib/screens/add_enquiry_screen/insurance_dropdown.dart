@@ -1,4 +1,3 @@
-// searchable dropdown
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -11,17 +10,19 @@ class SearchableInsuranceDropdown extends StatefulWidget {
   final String? Function(String?)? validator;
 
   const SearchableInsuranceDropdown({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.onItemSelected,
     this.validator,
-  }) : super(key: key);
+  });
 
   @override
-  State<SearchableInsuranceDropdown> createState() => _SearchableInsuranceDropdownState();
+  State<SearchableInsuranceDropdown> createState() =>
+      _SearchableInsuranceDropdownState();
 }
 
-class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdown> {
+class _SearchableInsuranceDropdownState
+    extends State<SearchableInsuranceDropdown> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _fieldKey = GlobalKey();
@@ -36,20 +37,20 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
   void initState() {
     super.initState();
     fetchInsuranceData();
-    _searchController.addListener(_filterInsurances);
+    _searchController.addListener(filterInsurances);
 
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
 
   @override
   void dispose() {
-    _hideDropdown();
+    hideDropdown();
     _searchController.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -70,7 +71,7 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
     }
   }
 
-  void _filterInsurances() {
+  void filterInsurances() {
     final query = _searchController.text.toLowerCase();
     setState(() {
       filteredInsurances = insurances
@@ -78,24 +79,23 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
           .toList();
     });
 
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 
-  void _selectInsurance(Map<String, dynamic> insurance) {
+  void selectInsurance(Map<String, dynamic> insurance) {
     setState(() {
       selectedInsurance = insurance['id'].toString();
       _searchController.text = insurance['name'];
-      _errorText = null; // Clear error when an insurance company is selected
+      _errorText = null;
     });
-    _hideDropdown();
+    hideDropdown();
     widget.onItemSelected(selectedInsurance!);
     FocusScope.of(context).unfocus();
   }
 
-  // Validate method that can be called from a FormField
   String? validate() {
     if (widget.validator != null) {
       final error = widget.validator!(selectedInsurance);
@@ -107,10 +107,11 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
     return null;
   }
 
-  void _showDropdown() {
-    _hideDropdown();
+  void showDropdown() {
+    hideDropdown();
 
-    final RenderBox renderBox = _fieldKey.currentContext!.findRenderObject() as RenderBox;
+    final RenderBox renderBox =
+        _fieldKey.currentContext!.findRenderObject() as RenderBox;
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
 
@@ -130,31 +131,38 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: filteredInsurances.isEmpty
-                ? const Center(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("No insurance companies found"),
-              ),
-            )
-                : ListView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              itemCount: filteredInsurances.length,
-              itemBuilder: (context, index) {
-                final insurance = filteredInsurances[index];
-                return ListTile(
-                  title: Text(
-                    insurance['name'],
-                    style: TextStyle(
-                      color: CustomColors.blackColor,
-                      fontSize: 15,
-                      fontFamily: 'PoppinsMedium',
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "No insurance companies found",
+                        style: TextStyle(
+                          color: CustomColors.blackColor,
+                          fontSize: 15,
+                          fontFamily: 'PoppinsMedium',
+                        ),
+                      ),
                     ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: filteredInsurances.length,
+                    itemBuilder: (context, index) {
+                      final insurance = filteredInsurances[index];
+                      return ListTile(
+                        title: Text(
+                          insurance['name'],
+                          style: TextStyle(
+                            color: CustomColors.blackColor,
+                            fontSize: 15,
+                            fontFamily: 'PoppinsRegular',
+                          ),
+                        ),
+                        onTap: () => selectInsurance(insurance),
+                      );
+                    },
                   ),
-                  onTap: () => _selectInsurance(insurance),
-                );
-              },
-            ),
           ),
         ),
       ),
@@ -163,7 +171,7 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -171,9 +179,10 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
   @override
   Widget build(BuildContext context) {
     return FormField<String>(
-      validator: (_) => widget.validator != null ? widget.validator!(selectedInsurance) : null,
+      validator: (_) => widget.validator != null
+          ? widget.validator!(selectedInsurance)
+          : null,
       builder: (FormFieldState<String> state) {
-        // Update error state when form validation runs
         if (state.hasError && _errorText != state.errorText) {
           _errorText = state.errorText;
         }
@@ -190,10 +199,11 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
                 hintStyle: TextStyle(
                   color: CustomColors.textFormTextColor,
                   fontSize: 15,
-                  fontFamily: 'PoppinsBold',
+                  fontFamily: 'PoppinsRegular',
                 ),
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),
+                  icon: Icon(Icons.arrow_drop_down,
+                      color: CustomColors.borderColor),
                   onPressed: () {
                     if (_focusNode.hasFocus) {
                       _focusNode.unfocus();
@@ -204,23 +214,37 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: _errorText != null ? CustomColors.redColor : CustomColors.borderColor, width: 0.5),
+                  borderSide: BorderSide(
+                      color: _errorText != null
+                          ? CustomColors.redColor
+                          : CustomColors.borderColor,
+                      width: 0.5),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: _errorText != null ? CustomColors.redColor : CustomColors.borderColor, width: 0.5),
+                  borderSide: BorderSide(
+                      color: _errorText != null
+                          ? CustomColors.redColor
+                          : CustomColors.borderColor,
+                      width: 0.5),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: _errorText != null ? CustomColors.redColor : CustomColors.borderColor, width: 0.5),
+                  borderSide: BorderSide(
+                      color: _errorText != null
+                          ? CustomColors.redColor
+                          : CustomColors.borderColor,
+                      width: 0.5),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: CustomColors.redColor, width: 0.5),
+                  borderSide:
+                      BorderSide(color: CustomColors.redColor, width: 0.5),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: CustomColors.redColor, width: 0.5),
+                  borderSide:
+                      BorderSide(color: CustomColors.redColor, width: 0.5),
                 ),
               ),
             ),
@@ -232,6 +256,7 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
                   style: TextStyle(
                     color: CustomColors.redColor,
                     fontSize: 12,
+                    fontFamily: 'PoppinsRegular',
                   ),
                 ),
               ),
@@ -242,157 +267,4 @@ class _SearchableInsuranceDropdownState extends State<SearchableInsuranceDropdow
   }
 }
 
-// my success dropdown
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
-// import '../../api_service_classes/insurance_company_api.dart';
-// import '../common_custom_widgets/colors.dart';
-//
-// class InsuranceDropdownField extends StatefulWidget {
-//   final String hintText;
-//   const InsuranceDropdownField({super.key, required this.hintText});
-//
-//   @override
-//   State<InsuranceDropdownField> createState() => _InsuranceDropdownFieldState();
-// }
-//
-// class _InsuranceDropdownFieldState extends State<InsuranceDropdownField> {
-//   List<Map<String, dynamic>> insuranceCompany = [];
-//   String? selectedInsuranceCompany;
-//   bool isInsured = false;
-//   @override
-//   void initState() {
-//     super.initState();
-//     fetchInsuranceCompanyData();
-//   }
-//
-//   Future<void> fetchInsuranceCompanyData() async {
-//     try {
-//       final insuranceCompanyList = InsuranceCompanyList();
-//       final data = await insuranceCompanyList.fetchInsuranceCompany(3);
-//       setState(() {
-//         insuranceCompany = data;
-//       });
-//     } catch (e) {
-//       if (kDebugMode) {
-//         print('Error loading Insurance company :$e');
-//       }
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: 370,
-//       child: DropdownButtonFormField<String>(
-//         isExpanded: true,
-//         dropdownColor: CustomColors.whiteColor,
-//         menuMaxHeight: 250,
-//         decoration: InputDecoration(
-//           border: OutlineInputBorder(
-//             borderRadius: BorderRadius.circular(8.0),
-//             borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),
-//           ),
-//           enabledBorder: OutlineInputBorder(
-//             borderRadius: BorderRadius.circular(08.0),
-//             borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),
-//           ),
-//           focusedBorder: OutlineInputBorder(
-//             borderRadius: BorderRadius.circular(08.0),
-//             borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),
-//           ),
-//         ),
-//         validator: (value) {
-//           if (isInsured && value == null) {
-//             return "Required";
-//           }
-//           return null;
-//         },
-//         hint: Text(
-//           widget.hintText,
-//           style: TextStyle(
-//               color: CustomColors.borderColor,
-//               fontSize: 13,
-//               fontFamily: 'PoppinsMedium'),
-//         ),
-//         value: selectedInsuranceCompany,
-//         items: insuranceCompany.map((company) => DropdownMenuItem<String>(
-//               value: company['id'].toString(),
-//               child: Text(
-//                 company['name'],
-//                 style: TextStyle(
-//                     color: CustomColors.blackColor,
-//                     fontSize: 15,
-//                     fontFamily: 'PoppinsMedium'),
-//               ),
-//             )).toList(),
-//         onChanged: (String? value) {
-//           setState(() {
-//             selectedInsuranceCompany = value;
-//           });
-//         },
-//       ),
-//     );
-//   }
-// }
-// import 'package:flutter/material.dart';
-// import 'package:flutter/foundation.dart';
-// import '../../api_service_classes/insurance_company_api.dart';
-// import '../checkkkkkkkkkkkkinnnnnnnnnnnnngg.dart';
-// import 'searchable_dropdown.dart';
-//
-// class InsuranceDropdownField extends StatefulWidget {
-//   final int firmId;  // Firm ID
-//   final String hintText;
-//
-//   const InsuranceDropdownField({super.key, required this.firmId, required this.hintText});
-//
-//   @override
-//   State<InsuranceDropdownField> createState() => _InsuranceDropdownFieldState();
-// }
-//
-// class _InsuranceDropdownFieldState extends State<InsuranceDropdownField> {
-//   List<String> _insuranceCompanies = [];
-//   bool _isLoading = true;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _fetchInsuranceCompanies();
-//   }
-//
-//   Future<void> _fetchInsuranceCompanies() async {
-//     try {
-//       InsuranceCompanyList api = InsuranceCompanyList();
-//       List<Map<String, dynamic>> companies = await api.fetchInsuranceCompany(widget.firmId);
-//
-//       setState(() {
-//         _insuranceCompanies = companies.map((c) => c['name'] as String).toList();
-//         _isLoading = false;
-//       });
-//     } catch (e) {
-//       if (kDebugMode) {
-//         print('Error fetching companies: $e');
-//       }
-//       setState(() {
-//         _isLoading = false;
-//       });
-//     }
-//   }
-//
-//   void _onCompanySelected(String companyName) {
-//     print("Selected company: $companyName");
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: 350,
-//       child: SearchableDropdown(
-//         hintText: widget.hintText,
-//         items: _insuranceCompanies,
-//         onItemSelected: _onCompanySelected,
-//       ),
-//     );
-//   }
-// }
+

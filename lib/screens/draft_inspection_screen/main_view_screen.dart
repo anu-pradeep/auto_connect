@@ -2,20 +2,13 @@ import 'package:auto_connect/screens/draft_inspection_screen/parts_container_wid
 import 'package:auto_connect/screens/draft_inspection_screen/services_container_widgets/service_container.dart';
 import 'package:auto_connect/screens/draft_inspection_screen/top_elevated_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../common_custom_widgets/appbar.dart';
 import '../common_custom_widgets/colors.dart';
 import '../common_custom_widgets/custom_heading_text.dart';
 import '../common_custom_widgets/drawer.dart';
-import 'add_operation_accident_details_container/add_operation_main_container.dart';
 import 'body_container_first.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: MainViewScreen(),
-  ));
-}
 
 class MainViewScreen extends StatefulWidget {
   const MainViewScreen({super.key});

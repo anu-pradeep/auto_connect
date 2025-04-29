@@ -23,7 +23,8 @@ class PlateNoTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: CustomColors.textFormTextColor,
             fontSize: 15,
-            fontFamily: 'PoppinsBold',
+            fontFamily: 'PoppinsRegular',
+
           ),
           filled: true,
           fillColor: CustomColors.whiteColor,

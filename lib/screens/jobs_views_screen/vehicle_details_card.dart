@@ -25,7 +25,6 @@ class _VehicleCardsState extends State<VehicleCards> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Vehicle details',

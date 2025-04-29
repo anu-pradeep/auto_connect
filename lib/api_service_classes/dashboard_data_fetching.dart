@@ -11,7 +11,7 @@ class JobMetrics {
   final int washingJobs;
 
 
-  // Constructor
+
   JobMetrics({
     required this.enquiryCount,
     required this.quotationCount,
@@ -24,7 +24,6 @@ class JobMetrics {
     required this.washingJobs,
   });
 
-  // Factory method to create a JobMetrics instance from JSON
   factory JobMetrics.fromJson(Map<String, dynamic> json) {
     return JobMetrics(
       enquiryCount: json['enquiriesCount']??0,

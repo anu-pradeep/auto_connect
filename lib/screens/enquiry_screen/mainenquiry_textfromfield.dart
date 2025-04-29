@@ -24,7 +24,7 @@ class MainEnqTextFrom extends StatelessWidget {
         contentPadding:
         const EdgeInsets.symmetric(vertical: 13.0, horizontal: 16.0), // to adjust height and width of textformfield
         filled: true,
-        fillColor: CustomColors.whiteColor, // Background inside TextField
+        fillColor: CustomColors.whiteColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(08.0),
           borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),

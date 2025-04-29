@@ -4,7 +4,6 @@ import '../common_custom_widgets/colors.dart';
 class IsInsuredDropdown extends StatefulWidget {
   final String hintText;
   final Function(String) onItemSelected;
-  // final String? Function(String?) validator;
   final List<String> items;
 
   const IsInsuredDropdown({
@@ -12,7 +11,6 @@ class IsInsuredDropdown extends StatefulWidget {
     required this.hintText,
     required this.onItemSelected,
     required this.items,
-    // required this.validator,
   });
 
   @override
@@ -31,12 +29,12 @@ class _IsInsuredDropdownState extends State<IsInsuredDropdown> {
   void initState() {
     super.initState();
     filteredItems = List.from(widget.items);
-    _searchController.addListener(_filterItems);
+    _searchController.addListener(filterItems);
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
@@ -51,7 +49,7 @@ class _IsInsuredDropdownState extends State<IsInsuredDropdown> {
     }
   }
 
-  void _filterItems() {
+  void filterItems() {
     final query = _searchController.text.toLowerCase();
     setState(() {
       filteredItems = widget.items
@@ -59,23 +57,23 @@ class _IsInsuredDropdownState extends State<IsInsuredDropdown> {
           .toList();
     });
 
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 
-  void _selectItem(String item) {
+  void selectItem(String item) {
     setState(() {
       _searchController.text = item;
     });
-    _hideDropdown();
+    hideDropdown();
     widget.onItemSelected(item);
     FocusScope.of(context).unfocus();
   }
 
-  void _showDropdown() {
-    _hideDropdown();
+  void showDropdown() {
+    hideDropdown();
 
     final RenderBox renderBox =
         _fieldKey.currentContext!.findRenderObject() as RenderBox;
@@ -130,7 +128,7 @@ class _IsInsuredDropdownState extends State<IsInsuredDropdown> {
                             fontFamily: 'PoppinsRegular',
                           ),
                         ),
-                        onTap: () => _selectItem(item),
+                        onTap: () => selectItem(item),
                       );
                     },
                   ),
@@ -142,7 +140,7 @@ class _IsInsuredDropdownState extends State<IsInsuredDropdown> {
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -153,7 +151,6 @@ class _IsInsuredDropdownState extends State<IsInsuredDropdown> {
       key: _fieldKey,
       controller: _searchController,
       focusNode: _focusNode,
-      // validator: widget.validator,
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: TextStyle(

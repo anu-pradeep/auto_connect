@@ -4,18 +4,15 @@ import '../../common_custom_widgets/colors.dart';
 class PartsServiceNoDropdown extends StatefulWidget {
   final String hintText;
   final Function(String) onItemSelected;
-  // final String? Function(String?) validator;
 
   const PartsServiceNoDropdown({
     super.key,
     required this.hintText,
     required this.onItemSelected,
-    // required this.validator,
   });
 
   @override
-  State<PartsServiceNoDropdown> createState() =>
-      _PartsServiceNoDropdownState();
+  State<PartsServiceNoDropdown> createState() => _PartsServiceNoDropdownState();
 }
 
 class _PartsServiceNoDropdownState extends State<PartsServiceNoDropdown> {
@@ -24,7 +21,7 @@ class _PartsServiceNoDropdownState extends State<PartsServiceNoDropdown> {
   final GlobalKey _fieldKey = GlobalKey();
   OverlayEntry? _overlayEntry;
 
-  List<String> items = []; // Start with an empty list
+  List<String> items = [];
   List<String> filteredItems = [];
 
   @override
@@ -73,7 +70,7 @@ class _PartsServiceNoDropdownState extends State<PartsServiceNoDropdown> {
     _hideDropdown();
 
     final RenderBox renderBox =
-    _fieldKey.currentContext!.findRenderObject() as RenderBox;
+        _fieldKey.currentContext!.findRenderObject() as RenderBox;
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
 
@@ -94,37 +91,47 @@ class _PartsServiceNoDropdownState extends State<PartsServiceNoDropdown> {
             ),
             child: filteredItems.isEmpty
                 ? Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("No items found"),
-                ),
-                TextButton(
-                  onPressed: () => _addNewItem(_searchController.text),
-                  child: const Text("Add New Item"),
-                ),
-              ],
-            )
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No items found",
+                          style: TextStyle(
+                            color: CustomColors.blackColor,
+                            fontFamily: 'PoppinsRegular',
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => _addNewItem(_searchController.text),
+                        child:  Text("Add New Item", style: TextStyle(
+                          color: CustomColors.blackColor,
+                          fontFamily: 'PoppinsRegular',
+                        ),),
+                      ),
+                    ],
+                  )
                 : ListView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              itemCount: filteredItems.length,
-              itemBuilder: (context, index) {
-                final item = filteredItems[index];
-                return ListTile(
-                  title: Text(
-                    item,
-                    style: TextStyle(
-                      color: CustomColors.blackColor,
-                      fontSize: 15,
-                      fontFamily: 'PoppinsMedium',
-                    ),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: filteredItems.length,
+                    itemBuilder: (context, index) {
+                      final item = filteredItems[index];
+                      return ListTile(
+                        title: Text(
+                          item,
+                          style: TextStyle(
+                            color: CustomColors.blackColor,
+                            fontSize: 15,
+                            fontFamily: 'PoppinsRegular',
+
+                          ),
+                        ),
+                        onTap: () => _selectItem(item),
+                      );
+                    },
                   ),
-                  onTap: () => _selectItem(item),
-                );
-              },
-            ),
           ),
         ),
       ),
@@ -150,11 +157,11 @@ class _PartsServiceNoDropdownState extends State<PartsServiceNoDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsBold',
+          fontFamily: 'PoppinsRegular',
+
         ),
-        // prefixIcon:  Icon(Icons.search, color: CustomColors.borderColor),
         suffixIcon: IconButton(
-          icon:  Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),
+          icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),
           onPressed: () {
             if (_focusNode.hasFocus) {
               _focusNode.unfocus();
@@ -166,13 +173,15 @@ class _PartsServiceNoDropdownState extends State<PartsServiceNoDropdown> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),
-        ), enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),
-      ),focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),
-      ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: CustomColors.borderColor, width: 0.5),
+        ),
       ),
     );
   }

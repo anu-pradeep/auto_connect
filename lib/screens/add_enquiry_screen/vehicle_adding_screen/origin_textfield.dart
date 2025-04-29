@@ -6,7 +6,7 @@ class OriginTextField extends StatelessWidget {
   final TextEditingController controller;
 
 
-  OriginTextField({
+  const OriginTextField({
     super.key,
 
     required this.controller,
@@ -23,7 +23,8 @@ class OriginTextField extends StatelessWidget {
           hintStyle: TextStyle(
             color: CustomColors.textFormTextColor,
             fontSize: 15,
-            fontFamily: 'PoppinsBold',
+            fontFamily: 'PoppinsRegular',
+
           ),
           filled: true,
           fillColor: CustomColors.whiteColor,

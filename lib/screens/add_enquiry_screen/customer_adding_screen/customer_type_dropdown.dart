@@ -1,4 +1,3 @@
-// Custom Searchable Dropdown Widget
 import 'package:auto_connect/api_service_classes/customer_type_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,9 +40,9 @@ class _CustomerTypeDropdownState extends State<CustomerTypeDropdown> {
     _searchController.addListener(filterCustomerType);
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
@@ -72,23 +71,23 @@ class _CustomerTypeDropdownState extends State<CustomerTypeDropdown> {
           .toList();
     });
 
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 
-  void _selectItem(String item) {
+  void selectItem(String item) {
     setState(() {
       _searchController.text = item;
     });
-    _hideDropdown();
+    hideDropdown();
     widget.onItemSelected(item);
     FocusScope.of(context).unfocus();
   }
 
-  void _showDropdown() {
-    _hideDropdown();
+  void showDropdown() {
+    hideDropdown();
 
     final RenderBox renderBox =
         _fieldKey.currentContext!.findRenderObject() as RenderBox;
@@ -121,7 +120,7 @@ class _CustomerTypeDropdownState extends State<CustomerTypeDropdown> {
                           style: TextStyle(
                             color: CustomColors.blackColor,
                             fontSize: 15,
-                            fontFamily: 'PoppinsMedium',
+                            fontFamily: 'PoppinsRegular',
                           ),
                         ),
                       ),
@@ -140,10 +139,10 @@ class _CustomerTypeDropdownState extends State<CustomerTypeDropdown> {
                           style: TextStyle(
                             color: CustomColors.blackColor,
                             fontSize: 15,
-                            fontFamily: 'PoppinsMedium',
+                            fontFamily: 'PoppinsRegular',
                           ),
                         ),
-                        onTap: () => _selectItem(item),
+                        onTap: () => selectItem(item),
                       );
                     },
                   ),
@@ -155,7 +154,7 @@ class _CustomerTypeDropdownState extends State<CustomerTypeDropdown> {
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -165,7 +164,7 @@ class _CustomerTypeDropdownState extends State<CustomerTypeDropdown> {
     _searchController.removeListener(filterCustomerType);
     _searchController.dispose();
     _focusNode.dispose();
-    _hideDropdown();
+    hideDropdown();
     super.dispose();
   }
 
@@ -181,7 +180,7 @@ class _CustomerTypeDropdownState extends State<CustomerTypeDropdown> {
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 12,
-          fontFamily: 'PoppinsMedium',
+          fontFamily: 'PoppinsRegular',
         ),
         suffixIcon: IconButton(
           icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),

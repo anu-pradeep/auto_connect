@@ -42,7 +42,7 @@ class _SearchableCarCompanyDropdownState
   void initState() {
     super.initState();
     fetchCarBrands();
-    _searchController.addListener(_filterCarBrands);
+    _searchController.addListener(filterCarBrands);
     _brandScrollController.addListener(() {
       if (_brandScrollController.position.pixels ==
               _brandScrollController.position.maxScrollExtent &&
@@ -53,22 +53,21 @@ class _SearchableCarCompanyDropdownState
     });
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _showDropdown();
+        showDropdown();
       } else {
-        _hideDropdown();
+        hideDropdown();
       }
     });
   }
 
   @override
   void dispose() {
-    _hideDropdown();
+    hideDropdown();
     _searchController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
 
-// scroll controller function
   Future<void> loadBrandList() async {
     if (brandLoading) return;
     setState(() {
@@ -107,7 +106,7 @@ class _SearchableCarCompanyDropdownState
     }
   }
 
-  void _filterCarBrands() {
+  void filterCarBrands() {
     final query = _searchController.text.toLowerCase();
     setState(() {
       filteredCarBrands = vehicle_brands
@@ -116,27 +115,24 @@ class _SearchableCarCompanyDropdownState
               .contains(query))
           .toList();
     });
-    _hideDropdown();
+    hideDropdown();
     if (_focusNode.hasFocus) {
-      _showDropdown();
+      showDropdown();
     }
   }
 
-  void _selectVehicleBrand(Map<String,dynamic>brands)
-  {
+  void selectVehicleBrand(Map<String, dynamic> brands) {
     setState(() {
       selectedCarBrands = brands['id'].toString();
-      _searchController.text ='${brands['id']}-${brands['name']}';
+      _searchController.text = '${brands['id']}-${brands['name']}';
     });
-    _hideDropdown();
+    hideDropdown();
     widget.onItemSelected(selectedCarBrands!);
     FocusScope.of(context).unfocus();
   }
 
-
-
-  void _showDropdown() {
-    _hideDropdown();
+  void showDropdown() {
+    hideDropdown();
 
     final RenderBox renderBox =
         _fieldKey.currentContext!.findRenderObject() as RenderBox;
@@ -154,7 +150,7 @@ class _SearchableCarCompanyDropdownState
           child: Container(
             constraints: const BoxConstraints(maxHeight: 200),
             decoration: BoxDecoration(
-              color:  CustomColors.whiteColor,
+              color: CustomColors.whiteColor,
               border: Border.all(color: CustomColors.borderColor),
               borderRadius: BorderRadius.circular(8.0),
             ),
@@ -167,7 +163,7 @@ class _SearchableCarCompanyDropdownState
                         style: TextStyle(
                           color: CustomColors.blackColor,
                           fontSize: 15,
-                          fontFamily: 'PoppinsMedium',
+                          fontFamily: 'PoppinsRegular',
                         ),
                       ),
                     ),
@@ -176,31 +172,31 @@ class _SearchableCarCompanyDropdownState
                     shrinkWrap: true,
                     controller: _brandScrollController,
                     padding: EdgeInsets.zero,
-                    itemCount: filteredCarBrands.length + (moreBrand?1:0),
+                    itemCount: filteredCarBrands.length + (moreBrand ? 1 : 0),
                     itemBuilder: (context, index) {
-                      if(index == filteredCarBrands.length){
-                  return Center(
-              child: Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: CircularProgressIndicator(
-    color: CustomColors.borderColor,
-    ),
-    ),
-    );
-    }
+                      if (index == filteredCarBrands.length) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircularProgressIndicator(
+                              color: CustomColors.borderColor,
+                            ),
+                          ),
+                        );
+                      }
 
                       final brands = filteredCarBrands[index];
                       return ListTile(
                         title: Text(
                           // '${brands['id']}-'
-                              '${brands['name']}',
+                          '${brands['name']}',
                           style: TextStyle(
                             color: CustomColors.blackColor,
                             fontSize: 15,
-                            fontFamily: 'PoppinsMedium',
+                            fontFamily: 'PoppinsRegular',
                           ),
                         ),
-                        onTap: () => _selectVehicleBrand(brands),
+                        onTap: () => selectVehicleBrand(brands),
                       );
                     },
                   ),
@@ -212,7 +208,7 @@ class _SearchableCarCompanyDropdownState
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  void _hideDropdown() {
+  void hideDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -229,9 +225,8 @@ class _SearchableCarCompanyDropdownState
         hintStyle: TextStyle(
           color: CustomColors.textFormTextColor,
           fontSize: 15,
-          fontFamily: 'PoppinsBold',
+          fontFamily: 'PoppinsRegular',
         ),
-        // prefixIcon: const Icon(Icons.search, color: Colors.grey),
         suffixIcon: IconButton(
           icon: Icon(Icons.arrow_drop_down, color: CustomColors.borderColor),
           onPressed: () {

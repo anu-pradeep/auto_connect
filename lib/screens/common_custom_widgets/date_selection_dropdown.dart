@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../common_custom_widgets/colors.dart';
+import 'colors.dart';
 
 class SelectDateRangeDropdown extends StatefulWidget {
   final Function(DateTime? startDate, DateTime? endDate) onDateRangeSelected;
@@ -26,19 +26,20 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedStartDay;
   DateTime? _selectedEndDay;
-  // CalendarFormat _calendarFormat = CalendarFormat.month;
+
   int _currentMonth = 0; // 0 = current month, 1 = next month
 
-  // Global key to get position for the dropdown
+
   final GlobalKey _dropdownKey = GlobalKey();
 
-  // Controller for dropdown overlay
+
   OverlayEntry? _overlayEntry;
 
   @override
   void dispose() {
-    _removeOverlay();
-    _toggleDropdown();
+
+    _overlayEntry?.remove();
+    _overlayEntry = null;
     super.dispose();
   }
 
@@ -67,7 +68,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
     _overlayEntry = OverlayEntry(
       builder: (context) => Stack(
         children: [
-          // Add a transparent modal barrier to handle clicks outside
+
           Positioned.fill(
             child: GestureDetector(
               onTap: _removeOverlay,
@@ -75,7 +76,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
               child: Container(color: Colors.transparent),
             ),
           ),
-          // The actual dropdown content
+
           Positioned(
             left: position.dx,
             top: position.dy + size.height,
@@ -90,8 +91,8 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
                   maxWidth: 500,
                 ),
                 child: _showCalendar
-                    ? _buildCalendarView()
-                    : _buildOptionsListView(),
+                    ? buildCalendarView()
+                    : buildOptionsListView(),
               ),
             ),
           ),
@@ -110,7 +111,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
       _selectedOption = option;
       _showCalendar = option == 'Custom Range';
 
-      // Calculate date range based on selected option
+
       final now = DateTime.now();
       switch (option) {
         case 'Today':
@@ -143,9 +144,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
           // Reset calendar selections
           _selectedStartDay = null;
           _selectedEndDay = null;
-          // Don't close the dropdown as we need to select dates
 
-          // Re-render the dropdown to show calendar
           _removeOverlay();
           _showDropdown();
           return;
@@ -158,7 +157,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
     });
   }
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       if (_selectedStartDay == null ||
           (_selectedStartDay != null && _selectedEndDay != null)) {
@@ -167,24 +166,21 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
       } else if (_selectedEndDay == null &&
           selectedDay.isAfter(_selectedStartDay!)) {
         _selectedEndDay = selectedDay;
-        // Both dates selected, update the range
         _startDate = _selectedStartDay;
         _endDate = DateTime(_selectedEndDay!.year, _selectedEndDay!.month,
             _selectedEndDay!.day, 23, 59, 59);
       } else {
-        // If user selects a date before the start date, reset selection
         _selectedStartDay = selectedDay;
         _selectedEndDay = null;
       }
       _focusedDay = focusedDay;
 
-      // Re-render the dropdown after selection
       _removeOverlay();
       _showDropdown();
     });
   }
 
-  void _applyDateRange() {
+  void applyDateRange() {
     if (_selectedStartDay != null && _selectedEndDay != null) {
       setState(() {
         _selectedOption = 'Custom Range';
@@ -196,7 +192,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
     }
   }
 
-  void _clearDateRange() {
+  void clearDateRange() {
     setState(() {
       _selectedStartDay = null;
       _selectedEndDay = null;
@@ -206,7 +202,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
     });
   }
 
-  Widget _buildOptionsListView() {
+  Widget buildOptionsListView() {
     final List<String> optionLabels = [
       'Today',
       'Yesterday',
@@ -240,7 +236,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
     );
   }
 
-  Widget _buildCustomCalendarCell(
+  Widget buildCustomCalendar(
       BuildContext context, DateTime day, DateTime focusedDay) {
     final bool isToday = isSameDay(day, DateTime.now());
     final bool isSelected = _selectedStartDay != null &&
@@ -254,16 +250,13 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
     final bool isWeekend =
         day.weekday == DateTime.saturday || day.weekday == DateTime.sunday;
 
-    // Check if the day is within the focused month
     final bool isOutsideMonth = day.month != focusedDay.month;
 
-    // Selected start or end
     final bool isRangeStart =
         _selectedStartDay != null && isSameDay(_selectedStartDay!, day);
     final bool isRangeEnd =
         _selectedEndDay != null && isSameDay(_selectedEndDay!, day);
 
-    // Style settings
     Color textColor;
     Color? backgroundColor;
     BoxShape shape = BoxShape.circle;
@@ -309,8 +302,8 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
     );
   }
 
-  Widget _buildCalendarView() {
-    // Current month and next month
+  Widget buildCalendarView() {
+
     final DateTime currentMonth =
         DateTime.now().add(Duration(days: 30 * _currentMonth));
     final String currentMonthName = DateFormat('MMM yyyy').format(currentMonth);
@@ -394,15 +387,15 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
               headerVisible: false,
               daysOfWeekVisible: false,
               calendarBuilders: CalendarBuilders(
-                defaultBuilder: _buildCustomCalendarCell,
-                selectedBuilder: _buildCustomCalendarCell,
-                todayBuilder: _buildCustomCalendarCell,
+                defaultBuilder: buildCustomCalendar,
+                selectedBuilder: buildCustomCalendar,
+                todayBuilder: buildCustomCalendar,
                 markerBuilder: (context, date, events) => null,
                 outsideBuilder: (context, day, focusedDay) =>
-                    _buildCustomCalendarCell(context, day, focusedDay),
-                rangeStartBuilder: _buildCustomCalendarCell,
-                rangeEndBuilder: _buildCustomCalendarCell,
-                withinRangeBuilder: _buildCustomCalendarCell,
+                    buildCustomCalendar(context, day, focusedDay),
+                rangeStartBuilder: buildCustomCalendar,
+                rangeEndBuilder: buildCustomCalendar,
+                withinRangeBuilder: buildCustomCalendar,
               ),
               startingDayOfWeek: StartingDayOfWeek.sunday,
               selectedDayPredicate: (day) {
@@ -412,7 +405,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
               },
               rangeStartDay: _selectedStartDay,
               rangeEndDay: _selectedEndDay,
-              onDaySelected: _onDaySelected,
+              onDaySelected: onDaySelected,
               onPageChanged: (focusedDay) {
                 setState(() {
                   _focusedDay = focusedDay;
@@ -452,7 +445,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
             children: [
               TextButton(
                 onPressed: () {
-                  _clearDateRange();
+                  clearDateRange();
                   _removeOverlay();
                   _showDropdown();
                 },
@@ -469,7 +462,7 @@ class _SelectDateRangeDropdownState extends State<SelectDateRangeDropdown> {
               ),
               ElevatedButton(
                 onPressed: _selectedStartDay != null && _selectedEndDay != null
-                    ? _applyDateRange
+                    ? applyDateRange
                     : null,
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

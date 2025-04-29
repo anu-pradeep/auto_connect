@@ -4,17 +4,13 @@ import 'package:flutter/material.dart';
 class CustomRichText extends StatelessWidget {
   final String mainText;
   final String highlightedText;
-  // final Color color;
-  // final double fontSize;
-  // final String fontFamily;
+
 
   const CustomRichText({
     super.key,
     required this.mainText,
     required this.highlightedText,
-    // this.color = Colors.black,
-    // this.fontSize = 20,
-    // this.fontFamily = 'PoppinsMedium',
+
   });
 
   @override

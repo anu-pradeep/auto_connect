@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:auto_connect/api_class/api_path.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,22 +37,16 @@ class CustomerListClass {
                 })
             .toList();
 
-        if (kDebugMode) {
-          print('Fetched page $page: $extractedData');
-        }
+
 
         return extractedData;
       } else {
-        if (kDebugMode) {
-          print('API Error: ${response.statusCode} - ${response.body}');
-        }
+
         throw Exception(
             'Failed to fetch customer list: ${response.reasonPhrase}');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('Error during API call: $e');
-      }
+
       throw Exception('Failed to fetch customer list');
     }
   }

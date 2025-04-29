@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:auto_connect/api_class/api_path.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,12 +20,7 @@ class DashboardService {
           'firm_id' :firm_id.toString(),
         },
       );
-      if (kDebugMode) {
-        print('token is : $token');
-      }
-      if (kDebugMode) {
-        print('firm id is : $firm_id');
-      }
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['status'] == true) {

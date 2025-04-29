@@ -46,12 +46,12 @@ class _JobGridviewState extends State<JobGridview> {
                   children: [
                     Row(
                       children: [
-                        const Expanded(
+                         Expanded(
                             child: VehicleCard(
-                          prefixText: 'b ',
-                          plateSourceText: 'xxxx',
-                          plateCategoryText: 'xxxxxxxxxx',
-                          plateNo: '100',
+                          prefixText: job.platePrefix,
+                          plateSourceText: job.stateName,
+                          plateCategoryText: job.plateType,
+                          plateNo: job.registerNumber,
                         )),
                         const SizedBox(width: 10),
                         Container(
@@ -213,8 +213,7 @@ class _JobGridviewState extends State<JobGridview> {
     try {
       final response = await _jobListService.fetchJobList(3);
       if (response['success'] == true) {
-        // final List<dynamic> jobListData =
-        //     response['data']['jobs'] ?? [];
+
         final List<dynamic> jobListData =
             response['data']['jobs']['data'] ?? [];
 
@@ -226,13 +225,7 @@ class _JobGridviewState extends State<JobGridview> {
           firstLoad = false;
         });
 
-        if (kDebugMode) {
-          print('Fetched ${jobListData.length} jobs');
-        }
-      } else {
-        if (kDebugMode) {
-          print('Error fetching jobs: ${response['message']}');
-        }
+
       }
     } catch (error) {
       if (kDebugMode) {

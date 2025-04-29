@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: JobDetailsPage(),
-  ));
-}
+
 
 class JobDetailsPage extends StatelessWidget {
+  const JobDetailsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Job Details"),
+        title: const Text("Job Details"),
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeaderSection(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildDetailCards(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildButtonRow(),
           ],
         ),
@@ -38,7 +35,7 @@ class JobDetailsPage extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 3,
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -46,7 +43,7 @@ class JobDetailsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                     style: TextStyle(fontSize: 18, color: Colors.black),
                     children: [
                       TextSpan(
@@ -61,26 +58,26 @@ class JobDetailsPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: Colors.green,
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: Text("Completed", style: TextStyle(color: Colors.white)),
+                  child: const Text("Completed", style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               children: [
-                Text("Supervisor: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text("Supervisor: ", style: TextStyle(fontWeight: FontWeight.bold)),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: Colors.green,
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: Text("Mathew", style: TextStyle(color: Colors.white)),
+                  child: const Text("Mathew", style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
@@ -97,11 +94,11 @@ class JobDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(child: _buildCustomerDetails()),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(child: _buildVehicleDetails()),
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         _buildServiceDetails(),
       ],
     );
@@ -142,12 +139,12 @@ class JobDetailsPage extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 3,
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            SizedBox(height: 10),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            const SizedBox(height: 10),
             ...children,
           ],
         ),
@@ -157,12 +154,12 @@ class JobDetailsPage extends StatelessWidget {
 
   Widget _buildInfoRow(String label, String value) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: Colors.black54)),
-          Text(value, style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(label, style: const TextStyle(color: Colors.black54)),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -170,15 +167,15 @@ class JobDetailsPage extends StatelessWidget {
 
   Widget _buildStatusChip(String label, String status, Color color) {
     return Padding(
-      padding: EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8),
       child: Row(
         children: [
-          Text(label, style: TextStyle(color: Colors.black54)),
-          SizedBox(width: 10),
+          Text(label, style: const TextStyle(color: Colors.black54)),
+          const SizedBox(width: 10),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(5)),
-            child: Text(status, style: TextStyle(color: Colors.white)),
+            child: Text(status, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
